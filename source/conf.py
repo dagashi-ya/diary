@@ -32,6 +32,7 @@ release = '1.0'
 # ones.
 extensions = [
     'myst_parser',
+    'sphinx.ext.githubpages'
 ]
 source_suffix = [
     '.rst',
