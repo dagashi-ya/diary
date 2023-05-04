@@ -3,12 +3,13 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="検索" href="../search.html" /><link rel="next" title="IntelliJ IDEA構築手順" href="intellij.html" /><link rel="prev" title="Part-01" href="../HandsOn/test.html" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="検索" href="../search.html" /><link rel="next" title="IntelliJ IDEA構築手順" href="intellij.html" /><link rel="prev" title="========== Sprint1" href="../HandsOn/apigatewayLambda.html" />
 
     <!-- Generated with Sphinx 5.0.2 and Furo 2023.03.27 -->
         <title>sphinx構築手順 - diary 1.0 ドキュメント</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -154,18 +155,21 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+  <p class="caption" role="heading"><span class="caption-text">活動日記:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../src/hello.html">Part-01</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diary/sprint1.html">Sprint1(～5/12)</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Hands On:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../HandsOn/test.html">Part-01</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../HandsOn/apigatewayLambda.html">==========
+Sprint1</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<p class="caption" role="heading"><span class="caption-text">その他:</span></p>
 <ul class="current">
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">sphinx構築手順</a></li>
 <li class="toctree-l1"><a class="reference internal" href="intellij.html">IntelliJ IDEA構築手順</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reStructuredText.html">Sphinxでの文章の書き方(reStructuredText)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reStructuredText.html#id2">セクション(レベル１)</a></li>
 </ul>
 
 </div>
@@ -203,8 +207,68 @@
           <section id="sphinx">
 <h1>sphinx構築手順<a class="headerlink" href="#sphinx" title="Permalink to this heading">#</a></h1>
 <section id="id1">
-<h2>環境<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
-<p>以下の環境で構築を実施</p>
+<h2>前提<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>以下の環境で構築を実施</dt><dd><ul>
+<li><p>WorkSpaces（Amazon Linux release 2 (Karoo)）</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Sphinxで作成したページをGithub Pagesで公開することを目標としている</p></li>
+</ul>
+</section>
+<section id="id2">
+<h2>手順<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<section id="id3">
+<h3>1.sphinxのインストール<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
+<p>1. pythonのバージョン確認
+pythonのバージョンを確認する</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">V</span>
+</pre></div>
+</div>
+<p>2. 各種インストール
+sphinxとそれに付随したパッケージをインストールする</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">sphinx</span> <span class="n">furo</span>
+</pre></div>
+</div>
+<p>今回は&quot;furo&quot;というプロジェクトテンプレートを使用している。</p>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>プロジェクトテンプレートはこちら（<a class="reference external" href="https://sphinx-themes.org/">https://sphinx-themes.org/</a>）から選択できます。
+もちろん、デフォルトのままでもOK！</p>
+</div>
+<p>3. クイックスタート
+sphinxプロジェクトを新規作成をする。
+.. code-block:: python</p>
+<blockquote>
+<div><p>sphinx-quickstart</p>
+</div></blockquote>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>Separate source and build directories (y/n) [n]: y
+Project name:{プロジェクト名}
+Author name(s): {著者名}
+Project release []: ｛リリースバージョン｝
+Project language [en]: jp
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3>2.sphinxの設定変更<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>copy.py</p></li>
+<li><p>Makefile</p></li>
+</ol>
+</section>
+<section id="git">
+<h3>3.git設定<a class="headerlink" href="#git" title="Permalink to this heading">#</a></h3>
+</section>
+<section id="github-pages">
+<h3>4.github pagesの公開設定<a class="headerlink" href="#github-pages" title="Permalink to this heading">#</a></h3>
+</section>
+</section>
+<section id="reference">
+<h2>reference<a class="headerlink" href="#reference" title="Permalink to this heading">#</a></h2>
 </section>
 </section>
 
@@ -222,14 +286,15 @@
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../HandsOn/test.html">
+          <a class="prev-page" href="../HandsOn/apigatewayLambda.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Part-01</div>
+                <div class="title">==========
+Sprint1</div>
                 
               </div>
             </a>
@@ -264,7 +329,15 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">sphinx構築手順</a><ul>
-<li><a class="reference internal" href="#id1">環境</a></li>
+<li><a class="reference internal" href="#id1">前提</a></li>
+<li><a class="reference internal" href="#id2">手順</a><ul>
+<li><a class="reference internal" href="#id3">1.sphinxのインストール</a></li>
+<li><a class="reference internal" href="#id4">2.sphinxの設定変更</a></li>
+<li><a class="reference internal" href="#git">3.git設定</a></li>
+<li><a class="reference internal" href="#github-pages">4.github pagesの公開設定</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#reference">reference</a></li>
 </ul>
 </li>
 </ul>
@@ -282,6 +355,8 @@
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/scripts/furo.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
     <script src="../_static/translations.js"></script>
     </body>
 </html>

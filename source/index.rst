@@ -8,29 +8,33 @@
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: 活動日記:
 
-   src/hello
+   diary/sprint1
 
 Hands On
 ====================================
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Hands On:
 
-   HandsOn/test
+   HandsOn/apigatewayLambda
 
 その他
 ====================================
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: その他:
 
    Other/sphinx
    Other/intellij
+   Other/reStructuredText
 
 Indices and tables
 ==================
+
+.. note::
+   test
 
 * :ref:`genindex`
 * :ref:`modindex`
