@@ -36,6 +36,9 @@ extensions = [
     "sphinx_copybutton",
     "sphinx.ext.todo",
 ]
+[extensions]
+todo_include_todos=True
+
 source_suffix = [
     '.rst',
     '.md'

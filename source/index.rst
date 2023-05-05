@@ -33,9 +33,6 @@ Hands On
 Indices and tables
 ==================
 
-.. note::
-   test
-
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
