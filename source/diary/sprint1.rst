@@ -3,31 +3,42 @@ Sprint1(～5/12)
 ====================
 
 期間
---------
+====================
 4/12（水）～5/12（水）
 
-進捗状況
---------
 
-.. list-table:: 進捗状況
+本スプリントの報告
+====================
+
+進捗状況
+---------
+.. list-table:: タスク一覧
     :widths: 5 10 40
     :header-rows: 1
 
-	* - No
-	  - 実施内容
-	  - 進捗状況
-	* - No.1
-	  - 環境構築
-	  - sphinx、intellij、githubのセットアップ完了
-	* - No.2
-	  - チュートリアル
-	  - test
-	* - No.3
-	  - 仕様調査
-	  - test
+    * - No
+      - 実施内容
+      - 進捗状況
+    * - 1
+      - 環境構築
+      - sphinx、intellij、githubのセットアップ完了
+    * - 2
+      - チュートリアル
+      - test
+    * - 3
+      - 仕様調査
+      - test
+
+環境構築
+---------
 
 
-.. list-table:: List tables can have captions like this one.
+
+次スプリントの予定
+====================
+実施予定
+---------
+.. list-table:: タスク一覧
     :widths: 5 10 40
     :header-rows: 1
 

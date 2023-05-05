@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="検索" href="../search.html" /><link rel="next" title="sphinx構築手順" href="../Other/sphinx.html" /><link rel="prev" title="Sprint1(～5/12)" href="../diary/sprint1.html" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="検索" href="../search.html" /><link rel="prev" title="Sphinxでの文章の書き方(reStructuredText)" href="reStructuredText.html" />
 
     <!-- Generated with Sphinx 5.0.2 and Furo 2023.03.27 -->
-        <title>API GatewayとLambdaを使ったサーバレスSpringアプリケーション - diary 1.0 ドキュメント</title>
+        <title>Terraform実行環境構築 - diary 1.0 ドキュメント</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
@@ -160,15 +160,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../diary/sprint1.html">Sprint1(～5/12)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Hands On:</span></p>
-<ul class="current">
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">API GatewayとLambdaを使ったサーバレスSpringアプリケーション</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../HandsOn/apigatewayLambda.html">API GatewayとLambdaを使ったサーバレスSpringアプリケーション</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">その他:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../Other/sphinx.html">sphinx構築手順</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Other/intellij.html">IntelliJ IDEA構築手順</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Other/reStructuredText.html">Sphinxでの文章の書き方(reStructuredText)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Other/terraform.html">Terraform実行環境構築</a></li>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="sphinx.html">sphinx構築手順</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intellij.html">IntelliJ IDEA構築手順</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reStructuredText.html">Sphinxでの文章の書き方(reStructuredText)</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Terraform実行環境構築</a></li>
 </ul>
 
 </div>
@@ -203,26 +203,49 @@
           </label>
         </div>
         <article role="main">
-          <section id="api-gatewaylambdaspring">
-<h1>API GatewayとLambdaを使ったサーバレスSpringアプリケーション<a class="headerlink" href="#api-gatewaylambdaspring" title="Permalink to this heading">#</a></h1>
+          <section id="terraform">
+<h1>Terraform実行環境構築<a class="headerlink" href="#terraform" title="Permalink to this heading">#</a></h1>
 <section id="id1">
 <h2>前提<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
-<p>以下ページを参考にAPI GatewayとLambdaを使用したspringアプリケーションを作成する。
-https://news.mynavi.jp/techplus/article/techp4316/
-基本的に、上記のページをトレースするが、学習のため本ページにまとめる。</p>
-</section>
-<section id="spring-cloud-funtion">
-<h2>サーバレス開発 - Spring Cloud Funtionとは<a class="headerlink" href="#spring-cloud-funtion" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
-<li><p>サーバレス開発とは、サーバや実行環境をほぼ意識することなく、最少限度のプログラムを用いて、アプリケーション実行環境を構築する開発方法を指している</p></li>
-<li><p>AWSでは、リクエストを受け付ける(APサーバの役割を代替する)API Gatewayと、アプリケーションの実行ランタイムを提供するAWS Lamdaを用いて、標準的なサーバレス開発を実現できる</p>
-<ul>
-<li><p>API Gateway</p></li>
-<li><p>AWS Lamda</p></li>
+<li><dl class="simple">
+<dt>以下の環境で構築を実施</dt><dd><ul>
+<li><p>WorkSpaces（Amazon Linux release 2 (Karoo)）</p></li>
 </ul>
+</dd>
+</dl>
 </li>
-<li><p>Spring Cloud Functionは関数型のビジネスロジック実行をベースとしたフレームワーク</p></li>
+<li><p>Sphinxで作成したページをGithub Pagesで公開することを目標としている</p></li>
 </ul>
+</section>
+<section id="id2">
+<h2>事前準備<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>AWSアカウントの作成</p></li>
+</ul>
+</section>
+<section id="id3">
+<h2>構築手順<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h2>
+<section id="aws-cli">
+<h3>AWS CLIインストール<a class="headerlink" href="#aws-cli" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>AWS CLI インストールファイルDL</p></li>
+</ol>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl <span class="s2">&quot;https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip&quot;</span> -o ~/awscliv2.zip
+</pre></div>
+</div>
+<p>2. インストールファイル展開
+.. code-block:: shell</p>
+<blockquote>
+<div><p>unzip ~/awscliv2.zip</p>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li><p>AWS CLI インストール</p></li>
+</ol>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo ~/aws/install
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 
@@ -231,23 +254,15 @@ https://news.mynavi.jp/techplus/article/techp4316/
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../Other/sphinx.html">
-              <div class="page-info">
-                <div class="context">
-                  <span>Next</span>
-                </div>
-                <div class="title">sphinx構築手順</div>
-              </div>
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
-            </a>
-          <a class="prev-page" href="../diary/sprint1.html">
+          
+          <a class="prev-page" href="reStructuredText.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Sprint1(～5/12)</div>
+                <div class="title">Sphinxでの文章の書き方(reStructuredText)</div>
                 
               </div>
             </a>
@@ -281,9 +296,13 @@ https://news.mynavi.jp/techplus/article/techp4316/
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">API GatewayとLambdaを使ったサーバレスSpringアプリケーション</a><ul>
+<li><a class="reference internal" href="#">Terraform実行環境構築</a><ul>
 <li><a class="reference internal" href="#id1">前提</a></li>
-<li><a class="reference internal" href="#spring-cloud-funtion">サーバレス開発 - Spring Cloud Funtionとは</a></li>
+<li><a class="reference internal" href="#id2">事前準備</a></li>
+<li><a class="reference internal" href="#id3">構築手順</a><ul>
+<li><a class="reference internal" href="#aws-cli">AWS CLIインストール</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

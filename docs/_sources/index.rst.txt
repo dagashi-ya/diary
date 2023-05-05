@@ -29,6 +29,7 @@ Hands On
    Other/sphinx
    Other/intellij
    Other/reStructuredText
+   Other/terraform
 
 Indices and tables
 ==================

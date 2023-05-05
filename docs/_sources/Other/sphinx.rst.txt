@@ -37,7 +37,7 @@ sphinxプロジェクトを新規作成をする。
 
 	sphinx-quickstart
 	
-.. code-block:: python
+.. code-block:: shell
 
 	Separate source and build directories (y/n) [n]: y
 	Project name:{プロジェクト名}
