@@ -7,7 +7,7 @@
 =================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: 活動日記:
 
    diary/sprint1
@@ -15,16 +15,16 @@
 Hands On
 ====================================
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Hands On:
 
    HandsOn/apigatewayLambda
 
-その他
+環境構築
 ====================================
 .. toctree::
-   :maxdepth: 2
-   :caption: その他:
+   :maxdepth: 1
+   :caption: 環境構築:
 
    Other/sphinx
    Other/intellij

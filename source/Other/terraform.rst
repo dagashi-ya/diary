@@ -59,7 +59,9 @@ AWS CLIインストール
 Terraformインストール
 ---------------------
 .. note::
+	
 	今回はtfenvというツールを使ってTerraformをインストールする
+	
 	tfenvとはTerraformを複数バージョンインストールして、切り替えて使用できるツール
 
 1. Gitリポジトリーをclone
@@ -125,3 +127,44 @@ Terraformインストール
 .. code-block:: shell
 	
 	terraform -install-autocomplete
+	
+git-secretsインストール
+---------------------
+
+.. note::
+	git-secretsを利用する事により、AWSアクセスキー、AWSシークレットキーをgitリポジトリにコミットできないようにコミット直前にチェックできるようになる
+
+
+1. Gitリポジトリーをclone
+
+.. code-block:: shell
+	
+	git clone https://github.com/awslabs/git-secrets.git ~/.git-secrets
+	
+2. git-secrets インストール
+
+.. code-block:: shell
+	
+	cd ~/.git-secrets/ && sudo make install
+	
+3. git-secrets をAWS用に設定
+
+.. code-block:: shell
+	
+	git secrets --register-aws --global
+	
+4. Gitのカスタム
+
+.. code-block:: shell
+	
+	git secrets --install ~/.git-templates/git-secrets
+	git config --global init.templatedir '~/.git-templates/git-secrets'
+	
+5. 設定確認
+以下のサイトを参考に、シークレットキーがcommitできないことを確認する
+
+* `基本的な使い方 <https://qiita.com/jqtype/items/9196e047eddb53d07a91#%E5%9F%BA%E6%9C%AC%E7%9A%84%E3%81%AA%E4%BD%BF%E3%81%84%E6%96%B9>`_
+
+参考
+================
+* `本番環境に対応したTerraform運用環境構築 <https://qiita.com/mttk030/items/fe11afddce39b9e5e60f>`_

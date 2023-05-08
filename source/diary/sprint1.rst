@@ -21,16 +21,24 @@ Sprint1(～5/12)
       - 進捗状況
     * - 1
       - 環境構築
-      - sphinx、intellij、githubのセットアップ完了
+      - sphinx、intellij、github、terraformのセットアップ完了
     * - 2
       - チュートリアル
-      - test
+      - 
     * - 3
       - 仕様調査
       - test
 
 環境構築
 ---------
+sphinxの構築手順
+
+terraformの構築手順
+
+
+チュートリアル
+------------------
+
 
 
 
