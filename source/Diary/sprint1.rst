@@ -24,16 +24,22 @@ Sprint1(～5/12)
       - sphinx、intellij、github、terraformのセットアップ完了
     * - 2
       - チュートリアル
-      - クラウドネイティブアプリケーションの基本
+      - | サーバレスSpringアプリケーション(1) ~ (3) 
+        | `クラウドネイティブアプリケーションの基本 <https://news.mynavi.jp/techplus/series/AWS/>`_
     * - 3
       - 仕様調査
-      - 
+      - 進捗なし
 
 環境構築
 ---------
-sphinxの構築手順
+1. | sphinxの構築手順 
+   | :doc:`../InitialBuild/sphinx`
 
-terraformの構築手順
+2. | terraformの構築手順
+   | :doc:`../InitialBuild/terraform`
+
+3. | intellijの構築手順
+   | :doc:`../InitialBuild/intellij`
 
 次スプリントの予定
 ====================
@@ -45,13 +51,11 @@ terraformの構築手順
 
     * - No
       - 実施内容
-      - 進捗状況
+      - 説明
     * - 1
-      - 環境構築
-      - sphinx、intellij、githubのセットアップ完了
-    * - 2
       - チュートリアル
-      - test
-    * - 3
+      - | サーバレスSpringアプリケーション(1) ~ (3) 
+        | `クラウドネイティブアプリケーションの基本 <https://news.mynavi.jp/techplus/series/AWS/>`_
+    * - 2
       - 仕様調査
-      - test
+      - ECS、ECRの調査

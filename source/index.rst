@@ -10,7 +10,7 @@
    :maxdepth: 1
    :caption: 活動日記:
 
-   diary/sprint1
+   Diary/sprint1
 
 Hands On
 ====================================
@@ -26,10 +26,10 @@ Hands On
    :maxdepth: 1
    :caption: 環境構築:
 
-   Other/sphinx
-   Other/intellij
-   Other/reStructuredText
-   Other/terraform
+   InitialBuild/sphinx
+   InitialBuild/intellij
+   InitialBuild/reStructuredText
+   InitialBuild/terraform
 
 Indices and tables
 ==================
