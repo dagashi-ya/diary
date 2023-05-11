@@ -1,0 +1,38 @@
+# sphinx構築手順
+## 前提
+- 以下の環境で構築を実施
+	- WorkSpaces（Amazon Linux release 2 (Karoo)）
+- Sphinxで作成したページをGithub Pagesで公開することを目標としている
+
+## 手順
+### 1.sphinxのインストール
+1. pythonのバージョン確認
+pythonのバージョンを確認する
+```
+python -V
+```
+2. 各種インストール
+sphinxとそれに付随したパッケージをインストールする
+```
+pip install sphinx furo
+```
+今回は"furo"というプロジェクトテンプレートを使用している。
+[](https://sphinx-themes.org/)
+note:
+
+#### クイックスタート
+
+
+### 2.sphinxの設定変更
+#### copy.py
+
+#### Makefile
+
+
+
+
+
+### 3.git設定
+### 4.github pagesの公開設定
+
+## reference
