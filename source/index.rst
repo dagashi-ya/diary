@@ -19,7 +19,8 @@ Hands On
    :maxdepth: 1
    :caption: Hands On:
 
-   HandsOn/apigatewayLambda
+   HandsOn/apigatewayLambda1
+   HandsOn/apigatewayLambda2
 
 環境構築
 ====================================
