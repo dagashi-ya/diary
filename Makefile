@@ -19,3 +19,7 @@ help:
 %: Makefile
 #	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 	$(SPHINXBUILD) -b html $(SOURCEDIR) $(BUILDDIR)
+
+livehtml:
+	sphinx-autobuild -b html $(SOURCEDIR) $(BUILDDIR)
+	

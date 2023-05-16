@@ -53,7 +53,7 @@
 	- メイン実行クラス
 
 	```
-	package com.sample.tutorialawslamdba;
+	package com.sample.tutorialawslambda;
 
 	import org.springframework.boot.SpringApplication;
 	import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -72,7 +72,7 @@
 	- Handlerクラス
 	
 	```
-	package com.sample.tutorialawslamdba;
+	package com.sample.tutorialawslambda;
 
 	import org.springframework.cloud.function.adapter.aws.SpringBootApiGatewayRequestHandler;
 
@@ -82,14 +82,14 @@
 
 	- ビジネスロジッククラス
 	```
-	package com.sample.tutorialawslamdba.functions;
+	package com.sample.tutorialawslambda.functions;
 
 	import java.util.HashMap;
 	import java.util.Map;
 	import java.util.function.Function;
 
 	import lombok.extern.slf4j.Slf4j;
-	import com.sample.tutorialawslamdba.model.Input;
+	import com.sample.tutorialawslambda.model.Input;
 	import org.springframework.messaging.Message;
 	import org.springframework.messaging.MessageHeaders;
 
@@ -118,7 +118,7 @@
 	- inputデータ（今回はinputクラスを作成）
 	
 	```
-	package com.sample.tutorialawslamdba.model;
+	package com.sample.tutorialawslambda.model;
 
 	import lombok.AllArgsConstructor;
 	import lombok.Builder;
@@ -201,7 +201,7 @@ pom.xmlの内容を確認する
 > [INFO] -------------------------------------------------------------  
 > [ERROR] COMPILATION ERROR :   
 > [INFO] -------------------------------------------------------------  
-> [ERROR] /home/xxxxxxx/IdeaProjects/tutorial-aws-lamdba/src/main/java/com/sample/tutorialawslamdba/app.java:[3,32] org.springframework.boot.SpringApplicationにアクセスできません  
+> [ERROR] /home/xxxxxxx/IdeaProjects/tutorial-aws-lambda/src/main/java/com/sample/tutorialawslambda/app.java:[3,32] org.springframework.boot.SpringApplicationにアクセスできません  
 >   クラス・ファイル/home/xxxxxxx/.m2/repository/org/springframework/boot/spring-boot/3.0.6/spring-boot-3.0.6.jar(org/springframework/boot/SpringApplication.class)は不正です  
 >     クラス・ファイルのバージョン61.0は不正です。52.0である必要があります  
 >     削除するか、クラスパスの正しいサブディレクトリにあるかを確認してください。  
@@ -210,7 +210,7 @@ pom.xmlの内容を確認する
 
 
 ## 疑問点
-- pom.xmlに入れるレポジトリを選定する方法について
+- pom.xmlに入れるライブラリを選定する方法について
 - Spring Milestonesの用途は？
 
 

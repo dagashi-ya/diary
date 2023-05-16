@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="検索" href="../search.html" /><link rel="next" title="sphinx構築手順" href="../InitialBuild/sphinx.html" /><link rel="prev" title="Sprint1(～5/12)" href="../Diary/sprint1.html" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="検索" href="../search.html" />
 
     <!-- Generated with Sphinx 5.0.2 and Furo 2023.03.27 -->
-        <title>API GatewayとLambdaを使ったサーバレスSpringアプリケーション(1) - diary 1.0 ドキュメント</title>
+        <title>API GatewayとLambdaを使ったサーバレスSpringアプリケーション(2) - diary 1.0 ドキュメント</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
@@ -160,10 +160,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../Diary/sprint2.html">Sprint2(～5/24)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Diary/sprint1.html">Sprint1(～5/12)</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Hands On:</span></p>
-<ul class="current">
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">API GatewayとLambdaを使ったサーバレスSpringアプリケーション(1)</a></li>
-</ul>
 <p class="caption" role="heading"><span class="caption-text">環境構築:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../InitialBuild/sphinx.html">sphinx構築手順</a></li>
@@ -205,12 +201,12 @@
           </label>
         </div>
         <article role="main">
-          <section id="api-gatewaylambdaspring-1">
-<h1>API GatewayとLambdaを使ったサーバレスSpringアプリケーション(1)<a class="headerlink" href="#api-gatewaylambdaspring-1" title="Permalink to this heading">#</a></h1>
+          <section id="api-gatewaylambdaspring-2">
+<h1>API GatewayとLambdaを使ったサーバレスSpringアプリケーション(2)<a class="headerlink" href="#api-gatewaylambdaspring-2" title="Permalink to this heading">#</a></h1>
 <section id="id1">
 <h2>前提<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
 <p>以下ページを参考にAPI GatewayとLambdaを使用したspringアプリケーションを作成する。<br />
-<a class="reference external" href="https://news.mynavi.jp/techplus/article/techp4316/">API GatewayとLambdaを使ったサーバレスSpringアプリケーション(1)</a><br />
+<a class="reference external" href="https://news.mynavi.jp/techplus/article/techp4316/">API GatewayとLambdaを使ったサーバレスSpringアプリケーション(2)</a><br />
 基本的に、上記のページをトレースするが、学習のため本ページにまとめる。</p>
 </section>
 <section id="spring-cloud-funtion">
@@ -279,7 +275,7 @@
 <ul class="simple">
 <li><p>メイン実行クラス</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">package</span> <span class="n">com</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">tutorialawslamdba</span><span class="p">;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">package</span> <span class="n">com</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">tutorialawslambda</span><span class="p">;</span>
 
 <span class="kn">import</span> <span class="nn">org.springframework.boot.SpringApplication</span><span class="p">;</span>
 <span class="kn">import</span> <span class="nn">org.springframework.boot.autoconfigure.SpringBootApplication</span><span class="p">;</span>
@@ -298,7 +294,7 @@
 <ul class="simple">
 <li><p>Handlerクラス</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">package</span> <span class="n">com</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">tutorialawslamdba</span><span class="p">;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">package</span> <span class="n">com</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">tutorialawslambda</span><span class="p">;</span>
 
 <span class="kn">import</span> <span class="nn">org.springframework.cloud.function.adapter.aws.SpringBootApiGatewayRequestHandler</span><span class="p">;</span>
 
@@ -309,14 +305,14 @@
 <ul class="simple">
 <li><p>ビジネスロジッククラス</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">package</span> <span class="n">com</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">tutorialawslamdba</span><span class="o">.</span><span class="n">functions</span><span class="p">;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">package</span> <span class="n">com</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">tutorialawslambda</span><span class="o">.</span><span class="n">functions</span><span class="p">;</span>
 
 <span class="kn">import</span> <span class="nn">java.util.HashMap</span><span class="p">;</span>
 <span class="kn">import</span> <span class="nn">java.util.Map</span><span class="p">;</span>
 <span class="kn">import</span> <span class="nn">java.util.function.Function</span><span class="p">;</span>
 
 <span class="kn">import</span> <span class="nn">lombok.extern.slf4j.Slf4j</span><span class="p">;</span>
-<span class="kn">import</span> <span class="nn">com.sample.tutorialawslamdba.model.Input</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">com.sample.tutorialawslambda.model.Input</span><span class="p">;</span>
 <span class="kn">import</span> <span class="nn">org.springframework.messaging.Message</span><span class="p">;</span>
 <span class="kn">import</span> <span class="nn">org.springframework.messaging.MessageHeaders</span><span class="p">;</span>
 
@@ -345,7 +341,7 @@
 <ul class="simple">
 <li><p>inputデータ（今回はinputクラスを作成）</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">package</span> <span class="n">com</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">tutorialawslamdba</span><span class="o">.</span><span class="n">model</span><span class="p">;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">package</span> <span class="n">com</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">tutorialawslambda</span><span class="o">.</span><span class="n">model</span><span class="p">;</span>
 
 <span class="kn">import</span> <span class="nn">lombok.AllArgsConstructor</span><span class="p">;</span>
 <span class="kn">import</span> <span class="nn">lombok.Builder</span><span class="p">;</span>
@@ -438,7 +434,7 @@
 <div><p>[INFO] -------------------------------------------------------------<br />
 [ERROR] COMPILATION ERROR :<br />
 [INFO] -------------------------------------------------------------<br />
-[ERROR] /home/xxxxxxx/IdeaProjects/tutorial-aws-lamdba/src/main/java/com/sample/tutorialawslamdba/app.java:[3,32] org.springframework.boot.SpringApplicationにアクセスできません<br />
+[ERROR] /home/xxxxxxx/IdeaProjects/tutorial-aws-lambda/src/main/java/com/sample/tutorialawslambda/app.java:[3,32] org.springframework.boot.SpringApplicationにアクセスできません<br />
 クラス・ファイル/home/xxxxxxx/.m2/repository/org/springframework/boot/spring-boot/3.0.6/spring-boot-3.0.6.jar(org/springframework/boot/SpringApplication.class)は不正です<br />
 クラス・ファイルのバージョン61.0は不正です。52.0である必要があります<br />
 削除するか、クラスパスの正しいサブディレクトリにあるかを確認してください。</p>
@@ -466,26 +462,8 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../InitialBuild/sphinx.html">
-              <div class="page-info">
-                <div class="context">
-                  <span>Next</span>
-                </div>
-                <div class="title">sphinx構築手順</div>
-              </div>
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
-            </a>
-          <a class="prev-page" href="../Diary/sprint1.html">
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
-              <div class="page-info">
-                <div class="context">
-                  <span>Previous</span>
-                </div>
-                
-                <div class="title">Sprint1(～5/12)</div>
-                
-              </div>
-            </a>
+          
+          
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -516,7 +494,7 @@
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">API GatewayとLambdaを使ったサーバレスSpringアプリケーション(1)</a><ul>
+<li><a class="reference internal" href="#">API GatewayとLambdaを使ったサーバレスSpringアプリケーション(2)</a><ul>
 <li><a class="reference internal" href="#id1">前提</a></li>
 <li><a class="reference internal" href="#spring-cloud-funtion">サーバレス開発 - Spring Cloud Funtionとは</a></li>
 <li><a class="reference internal" href="#id2">サーバレスアプリケーションの実装</a><ul>

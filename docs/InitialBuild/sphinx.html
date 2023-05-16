@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="検索" href="../search.html" /><link rel="next" title="IntelliJ IDEA構築手順" href="intellij.html" /><link rel="prev" title="API GatewayとLambdaを使ったサーバレスSpringアプリケーション" href="../HandsOn/apigatewayLambda.html" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="検索" href="../search.html" /><link rel="next" title="IntelliJ IDEA構築手順" href="intellij.html" /><link rel="prev" title="Sprint1(～5/12)" href="../Diary/sprint1.html" />
 
     <!-- Generated with Sphinx 5.0.2 and Furo 2023.03.27 -->
         <title>sphinx構築手順 - diary 1.0 ドキュメント</title>
@@ -157,11 +157,8 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">活動日記:</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../Diary/sprint2.html">Sprint2(～5/24)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Diary/sprint1.html">Sprint1(～5/12)</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Hands On:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../HandsOn/apigatewayLambda.html">API GatewayとLambdaを使ったサーバレスSpringアプリケーション</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">環境構築:</span></p>
 <ul class="current">
@@ -169,6 +166,7 @@
 <li class="toctree-l1"><a class="reference internal" href="intellij.html">IntelliJ IDEA構築手順</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reStructuredText.html">Sphinxでの文章の書き方(reStructuredText)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="terraform.html">Terraform実行環境構築</a></li>
+<li class="toctree-l1"><a class="reference internal" href="maven.html">Maven設定手順</a></li>
 </ul>
 
 </div>
@@ -229,21 +227,25 @@ pythonのバージョンを確認する</p>
 </div>
 <p>2. 各種インストール
 sphinxとそれに付随したパッケージをインストールする</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">sphinx</span> <span class="n">furo</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">sphinx</span> <span class="n">furo</span> <span class="n">sphinx</span><span class="o">-</span><span class="n">autobuild</span> <span class="n">myst_parser</span>
 </pre></div>
 </div>
-<p>今回は&quot;furo&quot;というプロジェクトテンプレートを使用している。</p>
+<div class="line-block">
+<div class="line">今回は&quot;furo&quot;というプロジェクトテンプレートを使用している。</div>
+<div class="line">sphinx-autobuildは自動ビルド、自動リロードが出来るツール</div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">注釈</p>
-<p>プロジェクトテンプレートはこちら（<a class="reference external" href="https://sphinx-themes.org/">https://sphinx-themes.org/</a>）から選択できます。
-もちろん、デフォルトのままでもOK！</p>
+<div class="line-block">
+<div class="line">プロジェクトテンプレートはこちら（<a class="reference external" href="https://sphinx-themes.org/">https://sphinx-themes.org/</a>）から選択できます。</div>
+<div class="line">もちろん、デフォルトのままでもOK！</div>
+</div>
 </div>
 <p>3. クイックスタート
-sphinxプロジェクトを新規作成をする。
-.. code-block:: python</p>
-<blockquote>
-<div><p>sphinx-quickstart</p>
-</div></blockquote>
+sphinxプロジェクトを新規作成をする。</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sphinx-quickstart
+</pre></div>
+</div>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>Separate <span class="nb">source</span> and build directories <span class="o">(</span>y/n<span class="o">)</span> <span class="o">[</span>n<span class="o">]</span>: y
 Project name:<span class="o">{</span>プロジェクト名<span class="o">}</span>
 Author name<span class="o">(</span>s<span class="o">)</span>: <span class="o">{</span>著者名<span class="o">}</span>
@@ -254,10 +256,38 @@ Project language <span class="o">[</span>en<span class="o">]</span>: jp
 </section>
 <section id="id4">
 <h3>2.sphinxの設定変更<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
-<ol class="arabic simple">
-<li><p>copy.py</p></li>
-<li><p>Makefile</p></li>
-</ol>
+<p>1. copy.py
+./souce/copy.py に以下を追記する</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;myst_parser&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;sphinx.ext.githubpages&#39;</span><span class="p">,</span> <span class="c1">#github pages</span>
+    <span class="s2">&quot;sphinx_copybutton&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">source_suffix</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;.rst&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;.md&#39;</span>
+<span class="p">]</span>
+<span class="n">source_parsers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;.rst&#39;</span><span class="p">:</span> <span class="s1">&#39;restructuredtext&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;.md&#39;</span><span class="p">:</span> <span class="s1">&#39;markdown&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>2. Makefile
+./Makefile に以下のように修正する
+github pagesの仕様でdocsディレクトリに作成されるhtmlを公開することになるため、ビルドの向き先をdocsにする</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">BUILDDIR</span>      <span class="o">=</span> docs
+</pre></div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1">#       @$(SPHINXBUILD) -M $@ &quot;$(SOURCEDIR)&quot; &quot;$(BUILDDIR)&quot; $(SPHINXOPTS) $(O)</span>
+        <span class="k">$(</span>SPHINXBUILD<span class="k">)</span> -b html <span class="k">$(</span>SOURCEDIR<span class="k">)</span> <span class="k">$(</span>BUILDDIR<span class="k">)</span>
+</pre></div>
+</div>
+<p>自動ビルドを実行するコマンドを定義する</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>livehtml:
+sphinx-autobuild -b html <span class="k">$(</span>SOURCEDIR<span class="k">)</span> <span class="k">$(</span>BUILDDIR<span class="k">)</span>
+</pre></div>
+</div>
 </section>
 <section id="git">
 <h3>3.git設定<a class="headerlink" href="#git" title="Permalink to this heading">#</a></h3>
@@ -270,6 +300,7 @@ Project language <span class="o">[</span>en<span class="o">]</span>: jp
 <h2>reference<a class="headerlink" href="#reference" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://zenn.dev/y_mrok/books/sphinx-no-tsukaikata/viewer/chapter1">Sphinx の使い方</a></p></li>
+<li><p><a class="reference external" href="https://qiita.com/mikanbako/items/28a3fc5d1da42939f941">sphinx-autobuildで再ビルド、ブラウザの再リロードの手間を省いてSphinx文書をサクサク作成</a></p></li>
 </ul>
 </section>
 </section>
@@ -288,14 +319,14 @@ Project language <span class="o">[</span>en<span class="o">]</span>: jp
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../HandsOn/apigatewayLambda.html">
+          <a class="prev-page" href="../Diary/sprint1.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">API GatewayとLambdaを使ったサーバレスSpringアプリケーション</div>
+                <div class="title">Sprint1(～5/12)</div>
                 
               </div>
             </a>

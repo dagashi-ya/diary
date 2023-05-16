@@ -10,6 +10,7 @@
    :maxdepth: 1
    :caption: 活動日記:
 
+   Diary/sprint2
    Diary/sprint1
 
 Hands On
@@ -30,6 +31,7 @@ Hands On
    InitialBuild/intellij
    InitialBuild/reStructuredText
    InitialBuild/terraform
+   InitialBuild/maven
 
 Indices and tables
 ==================
