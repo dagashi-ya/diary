@@ -21,26 +21,30 @@ Sprint2(～5/24)
       - 説明
     * - 1
       - チュートリアル
-      - | サーバレスSpringアプリケーション(1) ~ (3) 
+      - | サーバレスSpringアプリケーション(1) ~ (3) を実施中
         | `クラウドネイティブアプリケーションの基本 <https://news.mynavi.jp/techplus/series/AWS/>`_
     * - 2
       - 仕様調査
-      - ECS、ECRの調査
+      - ECS、ECRの調査を実施中
 
 1.チュートリアル
 ------------------
-1. | sphinxの構築手順 
-   | :doc:`../InitialBuild/sphinx`
+1. | サーバレスSpringアプリケーション(1) ~ (3) 
+   | チュートリアルを実施中
+   | :doc:`../HandsOn/apigatewayLambda1`
+   | :doc:`../HandsOn/apigatewayLambda2`
 
 
 2.仕様調査
 ------------------
-
+1. | ecsの仕様調査
+   | ecsの特徴整理を実施し、実際に構築をしてみている
+   | :doc:`../AWSResearch/ecs`
 
 次スプリントの予定
 ====================
-実施予定
----------
+実施予定（修正中）
+------------------
 .. list-table:: タスク一覧
     :widths: 5 10 40
     :header-rows: 1

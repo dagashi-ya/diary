@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="検索" href="../search.html" /><link rel="next" title="Sprint1(～5/12)" href="sprint1.html" /><link rel="prev" title="活動日記" href="../index.html" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="検索" href="../search.html" />
 
     <!-- Generated with Sphinx 5.0.2 and Furo 2023.03.27 -->
-        <title>Sprint2(～5/24) - diary 1.0 ドキュメント</title>
+        <title>Amazon ECSの仕様調査 - diary 1.0 ドキュメント</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
@@ -156,13 +156,9 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">活動日記:</span></p>
-<ul class="current">
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Sprint2(～5/24)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sprint1.html">Sprint1(～5/12)</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">AWS仕様調査:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../AWSResearch/ecs.html">Amazon ECSの仕様調査</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Diary/sprint2.html">Sprint2(～5/24)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Diary/sprint1.html">Sprint1(～5/12)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Hands On:</span></p>
 <ul>
@@ -210,106 +206,75 @@
           </label>
         </div>
         <article role="main">
-          <section id="sprint2-5-24">
-<h1>Sprint2(～5/24)<a class="headerlink" href="#sprint2-5-24" title="Permalink to this heading">#</a></h1>
+          <section id="amazon-ecs">
+<h1>Amazon ECSの仕様調査<a class="headerlink" href="#amazon-ecs" title="Permalink to this heading">#</a></h1>
 <section id="id1">
-<h2>期間<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
-<p>5/12（水）～5/24（水）</p>
+<h2>目的<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<p>本ページでは、以下のページを参考にAmazon ECSの概要や特徴をまとめ、実際にコンソール画面でECSを構築することをゴールとする。
+* <a class="reference external" href="https://aws.amazon.com/jp/ecs/features/?pg=ln&amp;sec=gs">Amazon ECS の特徴</a>
+余力があれば、TerraformでECSを構築できるようにコードを書きたい。</p>
 </section>
-<section id="id2">
-<h2>本スプリントの報告<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
 <section id="id3">
-<h3>進捗状況<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
-<div class="table-wrapper colwidths-given docutils container" id="id10">
-<table class="docutils align-default" id="id10">
-<caption><span class="caption-text">タスク一覧</span><a class="headerlink" href="#id10" title="このテーブルへのパーマリンク">#</a></caption>
-<colgroup>
-<col style="width: 9%" />
-<col style="width: 18%" />
-<col style="width: 73%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>No</p></th>
-<th class="head"><p>実施内容</p></th>
-<th class="head"><p>説明</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>1</p></td>
-<td><p>チュートリアル</p></td>
-<td><div class="line-block">
-<div class="line">サーバレスSpringアプリケーション(1) ~ (3) を実施中</div>
-<div class="line"><a class="reference external" href="https://news.mynavi.jp/techplus/series/AWS/">クラウドネイティブアプリケーションの基本</a></div>
+<h2>概要<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Amazon Elastic Container Serviceの略</p></li>
+<li><p>マネージドなコンテナオーケストレーションサービス</p></li>
+<li><p>organizations がコンテナ化されたアプリケーションを簡単にデプロイ、管理、およびスケールするのに役立つ</p>
+<ul>
+<li><p>AWS Organizationsとは、複数のAWSアカウントを一元管理できるAWSのサービス</p></li>
+</ul>
+</li>
+<li><p>Amazon EC2 や AWS Fargate で実行できるほか、Amazon ECS Anywhere のオンプレミスインフラストラクチャでも実行できる</p>
+<ul>
+<li><p>AWS FargateはサーバーやAmazon EC2インスタンスの クラスターを管理することなくコンテナを実行できる</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id4">
+<h2>主な特徴<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h2>
+<section id="aws-fargate">
+<h3>1. AWS Fargate を用い、設計による統合とサーバーレス<a class="headerlink" href="#aws-fargate" title="Permalink to this heading">#</a></h3>
+<ul>
+<li><div class="line-block">
+<div class="line">AWS Fargate は Amazon ECS に組み込まれているため、サーバーを管理したり、容量計画を扱う心配をしたり、安全性の面からコンテナワークロードを分離させる方法を検討する必要がなくなります。</div>
+<div class="line">→利用料金は上がるが、運用コストが減少する</div>
 </div>
-</td>
-</tr>
-<tr class="row-odd"><td><p>2</p></td>
-<td><p>仕様調査</p></td>
-<td><p>ECS、ECRの調査を実施中</p></td>
-</tr>
-</tbody>
-</table>
-</div>
+</li>
+<li><p>AWS Fargate がコンテナを柔軟なコンピューティングオプションで実行するために必要なスケーリングとインフラストラクチャ管理をすべて行う</p></li>
+</ul>
 </section>
 <section id="id5">
-<h3>1.チュートリアル<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h3>
-<ol class="arabic">
-<li><div class="line-block">
-<div class="line">サーバレスSpringアプリケーション(1) ~ (3)</div>
-<div class="line">チュートリアルを実施中</div>
-<div class="line"><a class="reference internal" href="../HandsOn/apigatewayLambda1.html"><span class="doc">API GatewayとLambdaを使ったサーバレスSpringアプリケーション(1)</span></a></div>
-<div class="line"><a class="reference internal" href="../HandsOn/apigatewayLambda2.html"><span class="doc">API GatewayとLambdaを使ったサーバレスSpringアプリケーション(2)</span></a></div>
-</div>
+<h3>2. ハイブリットデプロイ<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Amazon ECS Anywhere により、使い慣れた Amazon ECS コンソールとオペレーターツールを使い、オンプレミスのコンテナワークロードを管理できる</p>
+<ul>
+<li><p>Amazon ECS Anywhereはユーザーが所有する任意のインフラ環境で、ECS のコントロールプレーンを利用して簡単にコンテナを実行することができる機能</p></li>
+</ul>
 </li>
-</ol>
+</ul>
 </section>
 <section id="id6">
-<h3>2.仕様調査<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h3>
-<ol class="arabic">
-<li><div class="line-block">
-<div class="line">ecsの仕様調査</div>
-<div class="line">ecsの特徴整理を実施し、実際に構築をしてみている</div>
-<div class="line"><a class="reference internal" href="../AWSResearch/ecs.html"><span class="doc">Amazon ECSの仕様調査</span></a></div>
-</div>
-</li>
-</ol>
-</section>
+<h3>3. 設計による安全性と分離<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>すでに信頼を置くセキュリティ、ID、管理、ガバナンスのツールがネイティブで統合されているため、すばやくかつ確実に本番環境に移行することができる</p></li>
+<li><p>コンテナそれぞれにきめ細かく許可を割り当てることができるため、アプリケーション構築時には高度な分離が可能</p></li>
+</ul>
 </section>
 <section id="id7">
-<h2>次スプリントの予定<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h2>
-<section id="id8">
-<h3>実施予定（修正中）<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h3>
-<div class="table-wrapper colwidths-given docutils container" id="id11">
-<table class="docutils align-default" id="id11">
-<caption><span class="caption-text">タスク一覧</span><a class="headerlink" href="#id11" title="このテーブルへのパーマリンク">#</a></caption>
-<colgroup>
-<col style="width: 9%" />
-<col style="width: 18%" />
-<col style="width: 73%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>No</p></th>
-<th class="head"><p>実施内容</p></th>
-<th class="head"><p>説明</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>1</p></td>
-<td><p>チュートリアル</p></td>
-<td><div class="line-block">
-<div class="line">サーバレスSpringアプリケーション(1) ~ (3)</div>
-<div class="line"><a class="reference external" href="https://news.mynavi.jp/techplus/series/AWS/">クラウドネイティブアプリケーションの基本</a></div>
-</div>
-</td>
-</tr>
-<tr class="row-odd"><td><p>2</p></td>
-<td><p>仕様調査</p></td>
-<td><p>ECS、ECRの調査</p></td>
-</tr>
-</tbody>
-</table>
-</div>
+<h3>4. 自律型コントロールプレーンの運用<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>AWS の設定と運用上のベストプラクティスが組み込まれているため、コントロールプレーン、ノード、アドオンを管理する必要がない</p></li>
+<li><p>ネイティブで AWS とサードパーティーのツールのどちらも統合されている</p></li>
+</ul>
 </section>
+</section>
+<section id="id8">
+<h2>参考<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://aws.amazon.com/jp/ecs/features/?pg=ln&amp;sec=gs">Amazon ECS の特徴</a></p></li>
+<li><p><a class="reference external" href="https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/userguide/what-is-fargate.html">AWS Fargateとは?</a></p></li>
+</ul>
 </section>
 </section>
 
@@ -318,26 +283,8 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="sprint1.html">
-              <div class="page-info">
-                <div class="context">
-                  <span>Next</span>
-                </div>
-                <div class="title">Sprint1(～5/12)</div>
-              </div>
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
-            </a>
-          <a class="prev-page" href="../index.html">
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
-              <div class="page-info">
-                <div class="context">
-                  <span>Previous</span>
-                </div>
-                
-                <div class="title">Home</div>
-                
-              </div>
-            </a>
+          
+          
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -368,18 +315,17 @@
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Sprint2(～5/24)</a><ul>
-<li><a class="reference internal" href="#id1">期間</a></li>
-<li><a class="reference internal" href="#id2">本スプリントの報告</a><ul>
-<li><a class="reference internal" href="#id3">進捗状況</a></li>
-<li><a class="reference internal" href="#id5">1.チュートリアル</a></li>
-<li><a class="reference internal" href="#id6">2.仕様調査</a></li>
+<li><a class="reference internal" href="#">Amazon ECSの仕様調査</a><ul>
+<li><a class="reference internal" href="#id1">目的</a></li>
+<li><a class="reference internal" href="#id3">概要</a></li>
+<li><a class="reference internal" href="#id4">主な特徴</a><ul>
+<li><a class="reference internal" href="#aws-fargate">1. AWS Fargate を用い、設計による統合とサーバーレス</a></li>
+<li><a class="reference internal" href="#id5">2. ハイブリットデプロイ</a></li>
+<li><a class="reference internal" href="#id6">3. 設計による安全性と分離</a></li>
+<li><a class="reference internal" href="#id7">4. 自律型コントロールプレーンの運用</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id7">次スプリントの予定</a><ul>
-<li><a class="reference internal" href="#id8">実施予定（修正中）</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#id8">参考</a></li>
 </ul>
 </li>
 </ul>

@@ -13,6 +13,15 @@
    Diary/sprint2
    Diary/sprint1
 
+AWS仕様調査
+=================================
+
+.. toctree::
+   :maxdepth: 1
+   :caption: AWS仕様調査:
+
+   AWSResearch/ecs
+
 Hands On
 ====================================
 .. toctree::
