@@ -3,9 +3,9 @@ Amazon ECSの仕様調査
 =====================
 目的
 =======
-本ページでは、以下のページを参考にAmazon ECSの概要や特徴をまとめ、実際にコンソール画面でECSを構築することをゴールとする。
-* `Amazon ECS の特徴 <https://aws.amazon.com/jp/ecs/features/?pg=ln&sec=gs>`_
-余力があれば、TerraformでECSを構築できるようにコードを書きたい。
+| 本ページでは、以下のページを参考にAmazon ECSの概要や特徴をまとめ、実際にコンソール画面でECSを構築することをゴールとする。  
+| `Amazon ECS の特徴 <https://aws.amazon.com/jp/ecs/features/?pg=ln&sec=gs>`_
+| 余力があれば、TerraformでECSを構築できるようにコードを書きたい。
 
 概要
 ========
