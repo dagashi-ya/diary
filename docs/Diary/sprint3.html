@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="検索" href="../search.html" /><link rel="prev" title="Terraform実行環境構築" href="terraform.html" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="検索" href="../search.html" /><link rel="next" title="Sprint2(～5/24)" href="sprint2.html" /><link rel="prev" title="活動日記" href="../index.html" />
 
     <!-- Generated with Sphinx 5.0.2 and Furo 2023.03.27 -->
-        <title>Maven設定手順 - diary ドキュメント</title>
+        <title>Sprint3(～6/7) - diary ドキュメント</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
@@ -156,10 +156,10 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">活動日記:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../Diary/sprint3.html">Sprint3(～6/7)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Diary/sprint2.html">Sprint2(～5/24)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Diary/sprint1.html">Sprint1(～5/12)</a></li>
+<ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Sprint3(～6/7)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sprint2.html">Sprint2(～5/24)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sprint1.html">Sprint1(～5/12)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">AWS仕様調査:</span></p>
 <ul>
@@ -171,12 +171,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../HandsOn/apigatewayLambda2.html">API GatewayとLambdaを使ったサーバレスSpringアプリケーション(2)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">環境構築:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="sphinx.html">sphinx構築手順</a></li>
-<li class="toctree-l1"><a class="reference internal" href="intellij.html">IntelliJ IDEA構築手順</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reStructuredText.html">Sphinxでの文章の書き方(reStructuredText)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="terraform.html">Terraform実行環境構築</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Maven設定手順</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../InitialBuild/sphinx.html">sphinx構築手順</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../InitialBuild/intellij.html">IntelliJ IDEA構築手順</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../InitialBuild/reStructuredText.html">Sphinxでの文章の書き方(reStructuredText)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../InitialBuild/terraform.html">Terraform実行環境構築</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../InitialBuild/maven.html">Maven設定手順</a></li>
 </ul>
 
 </div>
@@ -211,72 +211,114 @@
           </label>
         </div>
         <article role="main">
-          <section id="maven">
-<h1>Maven設定手順<a class="headerlink" href="#maven" title="Permalink to this heading">#</a></h1>
+          <section id="sprint3-6-7">
+<h1>Sprint3(～6/7)<a class="headerlink" href="#sprint3-6-7" title="Permalink to this heading">#</a></h1>
 <section id="id1">
-<h2>前提<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
-<p>WorkSpaces（Amazon Linux release 2 (Karoo)）</p>
+<h2>期間<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<p>5/24(水）～6/7（水）</p>
 </section>
 <section id="id2">
-<h2>概要<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
-<p>Amazon Linux 2にMavenをインストールしてmvnコマンドが使えるようにする</p>
-</section>
+<h2>本スプリントの報告<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
 <section id="id3">
-<h2>手順<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h2>
-<section id="jdk8">
-<h3>1.JDK8をインストール<a class="headerlink" href="#jdk8" title="Permalink to this heading">#</a></h3>
-<p>WorkSpacesはデフォルトでjava11が入っているようなので、java8をインストールする。
-バージョンを切り替えたい場合は、alternativesコマンドを実行する。</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">java</span><span class="o">-</span><span class="mf">1.8.0</span><span class="o">-</span><span class="n">openjdk</span><span class="o">-</span><span class="n">devel</span><span class="o">.</span><span class="n">x86_64</span>
-<span class="n">sudo</span> <span class="n">alternatives</span> <span class="o">--</span><span class="n">config</span> <span class="n">java</span>
-<span class="n">java</span> <span class="o">-</span><span class="n">version</span>
-</pre></div>
+<h3>進捗状況<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
+<div class="table-wrapper colwidths-given docutils container" id="id9">
+<table class="docutils align-default" id="id9">
+<caption><span class="caption-text">タスク一覧</span><a class="headerlink" href="#id9" title="このテーブルへのパーマリンク">#</a></caption>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 18%" />
+<col style="width: 73%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>No</p></th>
+<th class="head"><p>実施内容</p></th>
+<th class="head"><p>説明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>チュートリアル</p></td>
+<td><div class="line-block">
+<div class="line">クラウドネイティブアプリケーションの基本</div>
+<div class="line"><a class="reference external" href="https://news.mynavi.jp/techplus/series/AWS/">AWS ECS上に構築するSpringアプリケーション</a></div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>仕様調査</p></td>
+<td><p>ECS、ECRの調査</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>AWS勉強</p></td>
+<td><p>AWSjamに向けてAWS全般の理解を深める</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </section>
 <section id="id4">
-<h3>2.Mavenをダウンロード<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span>
-<span class="n">sudo</span> <span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">dlcdn</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">maven</span><span class="o">/</span><span class="n">maven</span><span class="o">-</span><span class="mi">3</span><span class="o">/</span><span class="mf">3.8.8</span><span class="o">/</span><span class="n">binaries</span><span class="o">/</span><span class="n">apache</span><span class="o">-</span><span class="n">maven</span><span class="o">-</span><span class="mf">3.8.8</span><span class="o">-</span><span class="nb">bin</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
-</pre></div>
+<h3>1.チュートリアル<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
+<ol class="arabic">
+<li><div class="line-block">
+<div class="line">サーバレスSpringアプリケーション(1) ~ (3)</div>
+<div class="line">チュートリアルを実施中</div>
+<div class="line"><a class="reference internal" href="../HandsOn/apigatewayLambda1.html"><span class="doc">API GatewayとLambdaを使ったサーバレスSpringアプリケーション(1)</span></a></div>
+<div class="line"><a class="reference internal" href="../HandsOn/apigatewayLambda2.html"><span class="doc">API GatewayとLambdaを使ったサーバレスSpringアプリケーション(2)</span></a></div>
 </div>
+</li>
+</ol>
 </section>
 <section id="id5">
-<h3>3.Mavenを展開して配置する<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">tar</span> <span class="o">-</span><span class="n">xzvf</span> <span class="n">apache</span><span class="o">-</span><span class="n">maven</span><span class="o">-</span><span class="mf">3.8.8</span><span class="o">-</span><span class="nb">bin</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span> 
-<span class="n">sudo</span> <span class="n">mv</span> <span class="n">apache</span><span class="o">-</span><span class="n">maven</span><span class="o">-</span><span class="mf">3.8.8</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span>
-<span class="n">cd</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span>
-<span class="n">sudo</span> <span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">apache</span><span class="o">-</span><span class="n">maven</span><span class="o">-</span><span class="mf">3.8.8</span> <span class="n">apache</span><span class="o">-</span><span class="n">maven</span>
-<span class="n">ls</span> <span class="o">-</span><span class="n">l</span>
-</pre></div>
+<h3>2.仕様調査<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h3>
+<ol class="arabic">
+<li><div class="line-block">
+<div class="line">ecsの仕様調査</div>
+<div class="line">ecsの特徴整理を実施し、実際に構築をしてみている</div>
+<div class="line"><a class="reference internal" href="../AWSResearch/ecs.html"><span class="doc">Amazon ECSの仕様調査</span></a></div>
 </div>
-</section>
-<section id="mavenpath">
-<h3>4.MavenへのPATHを追加する<a class="headerlink" href="#mavenpath" title="Permalink to this heading">#</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span>
-<span class="n">vi</span> <span class="o">.</span><span class="n">bash_profile</span>
-</pre></div>
-</div>
-<p>以下の内容を追記する</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>MVN_HOME=/opt/apache-maven
-PATH=$MVN_HOME/bin:$PATH:$HOME/.local/bin:$HOME/bin
-</pre></div>
-</div>
-<p>設定を反映する</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="o">.</span><span class="n">bash_profile</span>
-</pre></div>
-</div>
-</section>
-<section id="mvn">
-<h3>5.mvnコマンドが使えることを確認する<a class="headerlink" href="#mvn" title="Permalink to this heading">#</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mvn</span> <span class="o">--</span><span class="n">version</span>
-</pre></div>
-</div>
+</li>
+</ol>
 </section>
 </section>
-<section id="reference">
-<h2>reference<a class="headerlink" href="#reference" title="Permalink to this heading">#</a></h2>
-<p><a class="reference external" href="https://maven.apache.org/download.cgi">Downloading Apache Maven 3.9.2</a><br />
-<a class="reference external" href="https://qiita.com/tamorieeeen/items/bcdf9729a5e9194c5d20">【AWS EC2】Amazon Linux 2にMavenをインストールする方法</a></p>
+<section id="id6">
+<h2>次スプリントの予定<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h2>
+<section id="id7">
+<h3>実施予定<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h3>
+<div class="table-wrapper colwidths-given docutils container" id="id10">
+<table class="docutils align-default" id="id10">
+<caption><span class="caption-text">タスク一覧</span><a class="headerlink" href="#id10" title="このテーブルへのパーマリンク">#</a></caption>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 18%" />
+<col style="width: 73%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>No</p></th>
+<th class="head"><p>実施内容</p></th>
+<th class="head"><p>説明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>チュートリアル</p></td>
+<td><div class="line-block">
+<div class="line">クラウドネイティブアプリケーションの基本</div>
+<div class="line"><a class="reference external" href="https://news.mynavi.jp/techplus/series/AWS/">AWS ECS上に構築するSpringアプリケーション</a></div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>仕様調査</p></td>
+<td><p>ECS、ECRの調査</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>AWS勉強</p></td>
+<td><p>AWSjamに向けてAWS全般の理解を深める</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 </section>
 </section>
 
@@ -285,15 +327,23 @@ PATH=$MVN_HOME/bin:$PATH:$HOME/.local/bin:$HOME/bin
       <footer>
         
         <div class="related-pages">
-          
-          <a class="prev-page" href="terraform.html">
+          <a class="next-page" href="sprint2.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Sprint2(～5/24)</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../index.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Terraform実行環境構築</div>
+                <div class="title">Home</div>
                 
               </div>
             </a>
@@ -327,18 +377,18 @@ PATH=$MVN_HOME/bin:$PATH:$HOME/.local/bin:$HOME/bin
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Maven設定手順</a><ul>
-<li><a class="reference internal" href="#id1">前提</a></li>
-<li><a class="reference internal" href="#id2">概要</a></li>
-<li><a class="reference internal" href="#id3">手順</a><ul>
-<li><a class="reference internal" href="#jdk8">1.JDK8をインストール</a></li>
-<li><a class="reference internal" href="#id4">2.Mavenをダウンロード</a></li>
-<li><a class="reference internal" href="#id5">3.Mavenを展開して配置する</a></li>
-<li><a class="reference internal" href="#mavenpath">4.MavenへのPATHを追加する</a></li>
-<li><a class="reference internal" href="#mvn">5.mvnコマンドが使えることを確認する</a></li>
+<li><a class="reference internal" href="#">Sprint3(～6/7)</a><ul>
+<li><a class="reference internal" href="#id1">期間</a></li>
+<li><a class="reference internal" href="#id2">本スプリントの報告</a><ul>
+<li><a class="reference internal" href="#id3">進捗状況</a></li>
+<li><a class="reference internal" href="#id4">1.チュートリアル</a></li>
+<li><a class="reference internal" href="#id5">2.仕様調査</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#reference">reference</a></li>
+<li><a class="reference internal" href="#id6">次スプリントの予定</a><ul>
+<li><a class="reference internal" href="#id7">実施予定</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

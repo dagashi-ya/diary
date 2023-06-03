@@ -22,7 +22,7 @@ copyright = '2023, hiroki-na'
 author = 'hiroki-na'
 
 # The full version, including alpha/beta/rc tags
-release = '1.0'
+release = ''
 
 
 # -- General configuration ---------------------------------------------------

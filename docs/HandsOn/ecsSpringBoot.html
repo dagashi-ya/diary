@@ -1,0 +1,469 @@
+<!doctype html>
+<html class="no-js" lang="ja">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="検索" href="../search.html" /><link rel="next" title="API GatewayとLambdaを使ったサーバレスSpringアプリケーション(2)" href="apigatewayLambda2.html" /><link rel="prev" title="Amazon ECSの仕様調査" href="../AWSResearch/ecs.html" />
+
+    <!-- Generated with Sphinx 5.0.2 and Furo 2023.03.27 -->
+        <title>AWS ECS上に構築するSpringアプリケーション - diary ドキュメント</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">diary  ドキュメント</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">diary  ドキュメント</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="検索" name="q" aria-label="検索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">活動日記:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Diary/sprint3.html">Sprint3(～6/7)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Diary/sprint2.html">Sprint2(～5/24)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Diary/sprint1.html">Sprint1(～5/12)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">AWS仕様調査:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../AWSResearch/awsALB.html">AWS ALB (Application Load Balancer)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AWSResearch/awsVPC.html">AWS VPC (Virtual Private Cloud)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../AWSResearch/ecs.html">Amazon ECSの仕様調査</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Hands On:</span></p>
+<ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">AWS ECS上に構築するSpringアプリケーション</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apigatewayLambda2.html">API GatewayとLambdaを使ったサーバレスSpringアプリケーション(2)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apigatewayLambda1.html">API GatewayとLambdaを使ったサーバレスSpringアプリケーション(1)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">環境構築:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../InitialBuild/sphinx.html">sphinx構築手順</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../InitialBuild/intellij.html">IntelliJ IDEA構築手順</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../InitialBuild/reStructuredText.html">Sphinxでの文章の書き方(reStructuredText)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../InitialBuild/terraform.html">Terraform実行環境構築</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../InitialBuild/maven.html">Maven設定手順</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="aws-ecsspring">
+<h1>AWS ECS上に構築するSpringアプリケーション<a class="headerlink" href="#aws-ecsspring" title="Permalink to this heading">#</a></h1>
+<section id="id1">
+<h2>前提<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<p>以下ページを参考にAPI GatewayとLambdaを使用したspringアプリケーションを作成する。<br />
+<a class="reference external" href="https://news.mynavi.jp/techplus/article/techp4354/">AWS ECS上に構築するSpringアプリケーション</a><br />
+基本的に、上記のページをトレースするが、学習のため本ページにまとめる。</p>
+</section>
+<section id="aws-ecs">
+<h2>AWS ECSの概要とアプリケーション環境構成<a class="headerlink" href="#aws-ecs" title="Permalink to this heading">#</a></h2>
+<p>「Amazon Elastic Container Service (Amazon ECS)」は、クラスタ単位でDockerコンテナを簡単にスケーラブルかつ高速に実行／停止／管理できるコンテナ管理サービスである。</p>
+<p>Linuxサーバ環境でDockerコンテナを単純に運用する場合と比較して、ECSではリージョン内の複数のアベイラビリティゾーンをまたいでコンテナを実行できるため、可用性の高い運用が可能である。2019年1月時点では、1つまたは複数のEC2上にクラスタを構築し、その上に任意のレジストリにあるDockerイメージをデプロイする「EC2起動型」と、実行するクラスタ自体をマネージドとしてAWSが自動で管理し、コンテナだけを意識する「Fargate」に分類できる。</p>
+<p>本稿では理解を深めるために、EC2クラスタ型でECSアプリケーションを構築するものとし、以下のようなイメージでECSアプリケーションを構築する形式とする。</p>
+<p><img alt="ECSアプリケーションの構築イメージ " src="../_images/ecsSpringBootOutline.jpg" /></p>
+</section>
+<section id="ecs">
+<h2>ECSアプリケーションの構築イメージ<a class="headerlink" href="#ecs" title="Permalink to this heading">#</a></h2>
+<p>作業はネットワーク環境の構築からアプリケーションの実装、コンテナイメージの作成、クラスタの実行など広範囲に及ぶので、以下の7つのステップに分けて解説を進めていく。</p>
+<ol class="arabic simple">
+<li><p>VPC (Virtual Private Cloud)環境の構築</p></li>
+<li><p>アプリケーションロードバランサ (ALB)の作成</p></li>
+<li><p>Springを使用したコンテナアプリケーションの実装方法</p></li>
+<li><p>Dockerコンテナの作成・DockerHubへのプッシュ</p></li>
+<li><p>ECSクラスタの作成</p></li>
+<li><p>ECSタスクの定義</p></li>
+<li><p>ECSサービスの実行</p></li>
+</ol>
+<p>最初のステップでは、ALBやECSクラスタを配置するための、VPCおよびサブネットを構築する。具体的には、構築するVPC環境において、サブネットはパブリックとプライベートに分割し、可用性を考慮して、複数のアベイラビリティゾーンでECSコンテナが配置されるよう設定する。</p>
+<p>サブネットをパブリックとプライベートに分割するのは、AWSではよく行われる構成で、次のような用途で構築される。</p>
+<ul class="simple">
+<li><p>パブリックサブネットはインターネットからのアクセスを受け付け、プライベートサブネットはVPC内からの接続のみ許可するようアクセス制御するため</p></li>
+<li><p>プライベートサブネットでは、DBへの接続や、オンプレミスとのVPNアクセスするサーバを配置し、セキュリティを向上させるため</p></li>
+</ul>
+<p>ブラウザからのリクエストがメインのWebアプリケーションやモバイルアプリケーションなど、クライアントが多様化している昨今、ECSでアプリケーションを構成する場合は、次のような用途で、各サブネットに役割を分けてECSコンテナを配置するユースケースが発生する。</p>
+<ul class="simple">
+<li><p>パブリックサブネットにはBackend For Frontend (以下、BFF)として、Webアプリケーション向けのHTMLを生成するサーバなどを配置する</p></li>
+<li><p>プライベートサブネットのECSコンテナにAPIサーバを配置し、データベース接続などを行う</p></li>
+</ul>
+<p>本連載では、こうしたユースケースを前提とした構成で、ECSアプリケーションを構築していく。なお、モバイル向けなど、シングルページアーキテクチャ(SPA)でアプリケーションを構成する場合、パブリックサブネットにはBFFアプリケーションの代わりに、「Amazon API Gateway」や「AWS AppSync」、「Kong」などのAPI Aggregationミドルウェアを設定する場合もある。2019年1月時点では、「Amazon API Gateway」のバックエンドにプライベートサブネット用のALBを介してECSコンテナを配置する構成はサポートされていないので、そうした構成をとりたい場合は、BFFサーバかKongなどのミドルウェアで代替する。</p>
+</section>
+<section id="aws-vpc">
+<h2>AWS VPCの設定<a class="headerlink" href="#aws-vpc" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>VPCダッシュボードに移動する</strong></p>
+<ul class="simple">
+<li><p>メニューの「Services」をクリックし、「VPC」を検索または選択する。</p></li>
+</ul>
+</li>
+<li><p><strong>VPCを作成する</strong></p>
+<ul class="simple">
+<li><p>VPCダッシュボードの左側のメニューで、「Your VPCs」をクリックする。</p></li>
+<li><p>「Create VPC」ボタンをクリックする。</p></li>
+<li><p>必要な情報（Name tag, IPv4 CIDR block等）を入力し、「Create」ボタンをクリックする。</p></li>
+</ul>
+</li>
+<li><p><strong>サブネットを作成する</strong></p>
+<ul class="simple">
+<li><p>左側のメニューで、「Subnets」をクリックする。</p></li>
+<li><p>「Create subnet」ボタンをクリックする。</p></li>
+<li><p>必要な情報（Name tag, VPC, IPv4 CIDR block等）を入力し、「Create」ボタンをクリックする。</p></li>
+</ul>
+</li>
+<li><p><strong>インターネットゲートウェイを作成＆アタッチする</strong></p>
+<ul class="simple">
+<li><p>左側のメニューで、「Internet Gateways」をクリックする。</p></li>
+<li><p>「Create internet gateway」ボタンをクリックする。</p></li>
+<li><p>必要な情報（Name tag等）を入力し、「Create」ボタンをクリックする。</p></li>
+<li><p>作成したインターネットゲートウェイを選択し、「Actions」ドロップダウンから「Attach to VPC」を選択し、対象のVPCを選択する。</p></li>
+</ul>
+</li>
+<li><p><strong>ルートテーブルを設定する</strong></p>
+<ul class="simple">
+<li><p>左側のメニューで、「Route Tables」をクリックする。</p></li>
+<li><p>新たにルートテーブルを作成するか、既存のルートテーブルを選択する。</p></li>
+<li><p>「Routes」タブを選択し、「Edit routes」をクリックする。</p></li>
+<li><p>「Add route」をクリックし、Destinationには0.0.0.0/0、Targetには作成したインターネットゲートウェイを選択する。「Save routes」をクリックする。</p></li>
+<li><p>「Subnet Associations」タブを選択し、「Edit subnet associations」をクリックする。作成したサブネットを選択し、「Save」をクリックする。</p></li>
+</ul>
+</li>
+</ol>
+<p>以上の手順に従って、AWS VPCの設定を行うことができる。</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>パラメータ名</p></th>
+<th class="head text-left"><p>説明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>Name tag</p></td>
+<td class="text-left"><p>作成するVPCや他のAWSリソース（サブネット、インターネットゲートウェイなど）に付ける名称。リソースを一意に識別するために使用する。</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>IPv4 CIDR block</p></td>
+<td class="text-left"><p>VPC内のプライベートIPv4アドレス範囲を示す。CIDR表記法（例: <code class="docutils literal notranslate"><span class="pre">10.0.0.0/16</span></code>）で指定する。</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>VPC</p></td>
+<td class="text-left"><p>サブネットやインターネットゲートウェイを関連付けるためのVPC。これらのリソースは作成時に特定のVPCに関連付けられる。</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Destination</p></td>
+<td class="text-left"><p>ルートテーブルに追加するルートの対象となるIPアドレス範囲。0.0.0.0/0を指定することで、すべてのIPアドレス範囲を表すことができる。</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Target</p></td>
+<td class="text-left"><p>ルートテーブルに追加するルートのターゲット。インターネットゲートウェイやNATゲートウェイなどのリソースを指定する。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="aws-alb">
+<h2>AWS ALBの設定手順<a class="headerlink" href="#aws-alb" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>AWS Management Consoleにログインし、「EC2」を選択する。</p></li>
+<li><p>EC2ダッシュボードで、「Load Balancers」を選択する。</p></li>
+<li><p>「Create Load Balancer」をクリックする。</p></li>
+<li><p>「Load Balancer Type」で「Application Load Balancer」を選択し、「Create」をクリックする。</p></li>
+<li><p>「Configure Load Balancer」セクションで以下の設定を行う：</p>
+<ul class="simple">
+<li><p>「Load Balancer name」に適切な名前を入力する。</p></li>
+<li><p>「Scheme」でパブリックまたはインターナルのどちらかを選択する。</p></li>
+<li><p>「Listeners」セクションで、必要なポートとプロトコルを指定する。</p></li>
+</ul>
+</li>
+<li><p>「Availability Zones」セクションで、ALBを配置するアベイラビリティーゾーンを選択する。</p></li>
+<li><p>「Security settings」セクションで、必要なセキュリティグループを選択する。</p></li>
+<li><p>「Configure Routing」セクションで以下の設定を行う：</p>
+<ul class="simple">
+<li><p>「Target group」で新しいターゲットグループを作成するか、既存のターゲットグループを選択する。</p></li>
+<li><p>必要に応じて「Path-based routing」や「Host-based routing」を構成する。</p></li>
+</ul>
+</li>
+<li><p>「Register Targets」セクションで、ターゲットグループにターゲット（インスタンス、コンテナなど）を登録する。</p></li>
+<li><p>「Review」セクションで設定内容を確認し、「Create」をクリックする。</p></li>
+<li><p>ALBが作成されたら、必要に応じてDNS名を使用してアプリケーションにアクセスできることを確認する。</p></li>
+</ol>
+<p>以上で、AWS Management Consoleを使用してALBの設定が完了する。設定内容に応じてALBがトラフィックを受け取り、ターゲットグループに転送するように構成される。</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>パラメータ名</p></th>
+<th class="head text-left"><p>説明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>Name</p></td>
+<td class="text-left"><p>作成するALBの名称。この名前は、AWS内で一意でなければならない。</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Scheme</p></td>
+<td class="text-left"><p>ALBの公開範囲を指定する。<code class="docutils literal notranslate"><span class="pre">internet-facing</span></code>はインターネットからアクセス可能なALBを、<code class="docutils literal notranslate"><span class="pre">internal</span></code>はVPC内部からのみアクセス可能なALBを作成する。</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Listeners</p></td>
+<td class="text-left"><p>ALBが接続要求を受け入れるためのポートとプロトコルを指定する。HTTPおよびHTTPSが選択可能である。</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Availability Zones</p></td>
+<td class="text-left"><p>ALBを配置するVPC内のAvailability Zoneと、それぞれに関連付けられるサブネットを指定する。</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Security groups</p></td>
+<td class="text-left"><p>ALBに関連付けるセキュリティグループを指定する。これにより、ALBへのインバウンドトラフィックの許可/拒否を制御する。</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Target group</p></td>
+<td class="text-left"><p>ALBがトラフィックをルーティングする対象の一覧。このグループには、リクエストを処理するEC2インスタンスなどが含まれる。</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Health checks</p></td>
+<td class="text-left"><p>ALBがターゲットグループのヘルスチェックを実行するための設定。例えば、チェックするパスや、成功と判定するHTTPステータスコードなどを設定する。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="apigatewayLambda2.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">API GatewayとLambdaを使ったサーバレスSpringアプリケーション(2)</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../AWSResearch/ecs.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Amazon ECSの仕様調査</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, hiroki-na
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">AWS ECS上に構築するSpringアプリケーション</a><ul>
+<li><a class="reference internal" href="#id1">前提</a></li>
+<li><a class="reference internal" href="#aws-ecs">AWS ECSの概要とアプリケーション環境構成</a></li>
+<li><a class="reference internal" href="#ecs">ECSアプリケーションの構築イメージ</a></li>
+<li><a class="reference internal" href="#aws-vpc">AWS VPCの設定</a></li>
+<li><a class="reference internal" href="#aws-alb">AWS ALBの設定手順</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/translations.js"></script>
+    </body>
+</html>

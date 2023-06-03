@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="検索" href="../search.html" /><link rel="prev" title="Terraform実行環境構築" href="terraform.html" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="検索" href="../search.html" /><link rel="next" title="AWS VPC (Virtual Private Cloud)" href="awsVPC.html" /><link rel="prev" title="Sprint1(～5/12)" href="../Diary/sprint1.html" />
 
     <!-- Generated with Sphinx 5.0.2 and Furo 2023.03.27 -->
-        <title>Maven設定手順 - diary ドキュメント</title>
+        <title>AWS ALB (Application Load Balancer) - diary ドキュメント</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
@@ -162,21 +162,24 @@
 <li class="toctree-l1"><a class="reference internal" href="../Diary/sprint1.html">Sprint1(～5/12)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">AWS仕様調査:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../AWSResearch/ecs.html">Amazon ECSの仕様調査</a></li>
+<ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">AWS ALB (Application Load Balancer)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="awsVPC.html">AWS VPC (Virtual Private Cloud)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ecs.html">Amazon ECSの仕様調査</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Hands On:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../HandsOn/apigatewayLambda1.html">API GatewayとLambdaを使ったサーバレスSpringアプリケーション(1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../HandsOn/ecsSpringBoot.html">AWS ECS上に構築するSpringアプリケーション</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../HandsOn/apigatewayLambda2.html">API GatewayとLambdaを使ったサーバレスSpringアプリケーション(2)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../HandsOn/apigatewayLambda1.html">API GatewayとLambdaを使ったサーバレスSpringアプリケーション(1)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">環境構築:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="sphinx.html">sphinx構築手順</a></li>
-<li class="toctree-l1"><a class="reference internal" href="intellij.html">IntelliJ IDEA構築手順</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reStructuredText.html">Sphinxでの文章の書き方(reStructuredText)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="terraform.html">Terraform実行環境構築</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Maven設定手順</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../InitialBuild/sphinx.html">sphinx構築手順</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../InitialBuild/intellij.html">IntelliJ IDEA構築手順</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../InitialBuild/reStructuredText.html">Sphinxでの文章の書き方(reStructuredText)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../InitialBuild/terraform.html">Terraform実行環境構築</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../InitialBuild/maven.html">Maven設定手順</a></li>
 </ul>
 
 </div>
@@ -211,72 +214,92 @@
           </label>
         </div>
         <article role="main">
-          <section id="maven">
-<h1>Maven設定手順<a class="headerlink" href="#maven" title="Permalink to this heading">#</a></h1>
+          <section id="aws-alb-application-load-balancer">
+<h1>AWS ALB (Application Load Balancer)<a class="headerlink" href="#aws-alb-application-load-balancer" title="Permalink to this heading">#</a></h1>
 <section id="id1">
-<h2>前提<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
-<p>WorkSpaces（Amazon Linux release 2 (Karoo)）</p>
+<h2>概要<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<p>AWS ALB (Application Load Balancer) は、AWSが提供するフルマネージド型のロードバランサであり、HTTPとHTTPSのトラフィックを効率的に分散することができます。</p>
 </section>
 <section id="id2">
-<h2>概要<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
-<p>Amazon Linux 2にMavenをインストールしてmvnコマンドが使えるようにする</p>
+<h2>主な特徴<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>レイヤ7のロードバランシング</strong>： ALBは、ネットワークのトランスポート層（レイヤ4）ではなく、アプリケーション層（レイヤ7）でトラフィックをロードバランシングすることができます。これにより、特定のURLパス（例えば、/imagesや/api）やHTTPヘッダー、リクエストメソッド（GET、POSTなど）に基づいてリクエストをルーティングすることができます。</p></li>
+<li><p><strong>コンテナベースのアプリケーションのサポート</strong>： ALBは、1つのEC2インスタンス上で複数のコンテナを稼働させることができます。それぞれのコンテナは独自のポートを使用できますので、特にDockerなどのコンテナ技術を使用したマイクロサービスアーキテクチャに適しています。</p></li>
+<li><p><strong>自動スケーリング</strong>： ALBは、トラフィックの増減に応じて自動的にスケーリングします。これにより、リクエストのピーク時でもパフォーマンスを維持することができます。</p></li>
+<li><p><strong>ウェブソケットおよびHTTP/2プロトコルのサポート</strong>： ALBは、ウェブソケットとHTTP/2の両方のプロトコルをサポートしています。これにより、リアルタイムの双方向通信や効率的な通信が可能となります。</p></li>
+<li><p><strong>統合されたSSL/TLS証明書の管理とサポート</strong>： ALBは、SSL/TLS証明書の管理を簡素化します。AWS Certificate Manager（ACM）で証明書を発行・管理し、ALBに関連付けることで、セキュアなSSL/TLS通信を確立することができます。</p></li>
+<li><p><strong>ヘルスチェック</strong>： ALBは、対象となるEC2インスタンスまたはコンテナが正常に稼働しているかを定期的にチェックし、問題がある場合はそのインスタンスやコンテナへのルーティングを停止します。これにより、サービスの可用性を向上させることができます。</p></li>
+</ul>
 </section>
 <section id="id3">
-<h2>手順<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h2>
-<section id="jdk8">
-<h3>1.JDK8をインストール<a class="headerlink" href="#jdk8" title="Permalink to this heading">#</a></h3>
-<p>WorkSpacesはデフォルトでjava11が入っているようなので、java8をインストールする。
-バージョンを切り替えたい場合は、alternativesコマンドを実行する。</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">java</span><span class="o">-</span><span class="mf">1.8.0</span><span class="o">-</span><span class="n">openjdk</span><span class="o">-</span><span class="n">devel</span><span class="o">.</span><span class="n">x86_64</span>
-<span class="n">sudo</span> <span class="n">alternatives</span> <span class="o">--</span><span class="n">config</span> <span class="n">java</span>
-<span class="n">java</span> <span class="o">-</span><span class="n">version</span>
-</pre></div>
-</div>
+<h2>主な用途<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Webアプリケーションの負荷分散とスケーリング</p></li>
+<li><p>マイクロサービスアーキテクチャにおけるコンテナのロードバランシング</p></li>
+<li><p>ウェブソケットを使用するリアルタイムアプリケーションのサポート</p></li>
+<li><p>セキュアなHTTPS通信の提供</p></li>
+<li><p>大規模なトラフィックの管理と制御</p></li>
+</ul>
 </section>
-<section id="id4">
-<h3>2.Mavenをダウンロード<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span>
-<span class="n">sudo</span> <span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">dlcdn</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">maven</span><span class="o">/</span><span class="n">maven</span><span class="o">-</span><span class="mi">3</span><span class="o">/</span><span class="mf">3.8.8</span><span class="o">/</span><span class="n">binaries</span><span class="o">/</span><span class="n">apache</span><span class="o">-</span><span class="n">maven</span><span class="o">-</span><span class="mf">3.8.8</span><span class="o">-</span><span class="nb">bin</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
-</pre></div>
+<section id="aws-alb">
+<h2>AWS ALBの設定手順<a class="headerlink" href="#aws-alb" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>AWS Management Consoleにログインし、「EC2」を選択する。</p></li>
+<li><p>EC2ダッシュボードで、「Load Balancers」を選択する。</p></li>
+<li><p>「Create Load Balancer」をクリックする。</p></li>
+<li><p>「Load Balancer Type」で「Application Load Balancer」を選択し、「Create」をクリックする。</p></li>
+<li><p>「Configure Load Balancer」セクションで以下の設定を行う：</p>
+<ul class="simple">
+<li><p>「Load Balancer name」に適切な名前を入力する。</p></li>
+<li><p>「Scheme」でパブリックまたはインターナルのどちらかを選択する。</p></li>
+<li><p>「Listeners」セクションで、必要なポートとプロトコルを指定する。</p></li>
+</ul>
+</li>
+<li><p>「Availability Zones」セクションで、ALBを配置するアベイラビリティーゾーンを選択する。</p></li>
+<li><p>「Security settings」セクションで、必要なセキュリティグループを選択する。</p></li>
+<li><p>「Configure Routing」セクションで以下の設定を行う：</p>
+<ul class="simple">
+<li><p>「Target group」で新しいターゲットグループを作成するか、既存のターゲットグループを選択する。</p></li>
+<li><p>必要に応じて「Path-based routing」や「Host-based routing」を構成する。</p></li>
+</ul>
+</li>
+<li><p>「Register Targets」セクションで、ターゲットグループにターゲット（インスタンス、コンテナなど）を登録する。</p></li>
+<li><p>「Review」セクションで設定内容を確認し、「Create」をクリックする。</p></li>
+<li><p>ALBが作成されたら、必要に応じてDNS名を使用してアプリケーションにアクセスできることを確認する。</p></li>
+</ol>
+<p>以上で、AWS Management Consoleを使用してALBの設定が完了する。設定内容に応じてALBがトラフィックを受け取り、ターゲットグループに転送するように構成される。</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>パラメータ名</p></th>
+<th class="head text-left"><p>説明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>Name</p></td>
+<td class="text-left"><p>作成するALBの名称。この名前は、AWS内で一意でなければならない。</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Scheme</p></td>
+<td class="text-left"><p>ALBの公開範囲を指定する。<code class="docutils literal notranslate"><span class="pre">internet-facing</span></code>はインターネットからアクセス可能なALBを、<code class="docutils literal notranslate"><span class="pre">internal</span></code>はVPC内部からのみアクセス可能なALBを作成する。</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Listeners</p></td>
+<td class="text-left"><p>ALBが接続要求を受け入れるためのポートとプロトコルを指定する。HTTPおよびHTTPSが選択可能である。</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Availability Zones</p></td>
+<td class="text-left"><p>ALBを配置するVPC内のAvailability Zoneと、それぞれに関連付けられるサブネットを指定する。</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Security groups</p></td>
+<td class="text-left"><p>ALBに関連付けるセキュリティグループを指定する。これにより、ALBへのインバウンドトラフィックの許可/拒否を制御する。</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Target group</p></td>
+<td class="text-left"><p>ALBがトラフィックをルーティングする対象の一覧。このグループには、リクエストを処理するEC2インスタンスなどが含まれる。</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Health checks</p></td>
+<td class="text-left"><p>ALBがターゲットグループのヘルスチェックを実行するための設定。例えば、チェックするパスや、成功と判定するHTTPステータスコードなどを設定する。</p></td>
+</tr>
+</tbody>
+</table>
 </div>
-</section>
-<section id="id5">
-<h3>3.Mavenを展開して配置する<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">tar</span> <span class="o">-</span><span class="n">xzvf</span> <span class="n">apache</span><span class="o">-</span><span class="n">maven</span><span class="o">-</span><span class="mf">3.8.8</span><span class="o">-</span><span class="nb">bin</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span> 
-<span class="n">sudo</span> <span class="n">mv</span> <span class="n">apache</span><span class="o">-</span><span class="n">maven</span><span class="o">-</span><span class="mf">3.8.8</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span>
-<span class="n">cd</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span>
-<span class="n">sudo</span> <span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">apache</span><span class="o">-</span><span class="n">maven</span><span class="o">-</span><span class="mf">3.8.8</span> <span class="n">apache</span><span class="o">-</span><span class="n">maven</span>
-<span class="n">ls</span> <span class="o">-</span><span class="n">l</span>
-</pre></div>
-</div>
-</section>
-<section id="mavenpath">
-<h3>4.MavenへのPATHを追加する<a class="headerlink" href="#mavenpath" title="Permalink to this heading">#</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span>
-<span class="n">vi</span> <span class="o">.</span><span class="n">bash_profile</span>
-</pre></div>
-</div>
-<p>以下の内容を追記する</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>MVN_HOME=/opt/apache-maven
-PATH=$MVN_HOME/bin:$PATH:$HOME/.local/bin:$HOME/bin
-</pre></div>
-</div>
-<p>設定を反映する</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="o">.</span><span class="n">bash_profile</span>
-</pre></div>
-</div>
-</section>
-<section id="mvn">
-<h3>5.mvnコマンドが使えることを確認する<a class="headerlink" href="#mvn" title="Permalink to this heading">#</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mvn</span> <span class="o">--</span><span class="n">version</span>
-</pre></div>
-</div>
-</section>
-</section>
-<section id="reference">
-<h2>reference<a class="headerlink" href="#reference" title="Permalink to this heading">#</a></h2>
-<p><a class="reference external" href="https://maven.apache.org/download.cgi">Downloading Apache Maven 3.9.2</a><br />
-<a class="reference external" href="https://qiita.com/tamorieeeen/items/bcdf9729a5e9194c5d20">【AWS EC2】Amazon Linux 2にMavenをインストールする方法</a></p>
 </section>
 </section>
 
@@ -285,15 +308,23 @@ PATH=$MVN_HOME/bin:$PATH:$HOME/.local/bin:$HOME/bin
       <footer>
         
         <div class="related-pages">
-          
-          <a class="prev-page" href="terraform.html">
+          <a class="next-page" href="awsVPC.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">AWS VPC (Virtual Private Cloud)</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../Diary/sprint1.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Terraform実行環境構築</div>
+                <div class="title">Sprint1(～5/12)</div>
                 
               </div>
             </a>
@@ -327,18 +358,11 @@ PATH=$MVN_HOME/bin:$PATH:$HOME/.local/bin:$HOME/bin
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Maven設定手順</a><ul>
-<li><a class="reference internal" href="#id1">前提</a></li>
-<li><a class="reference internal" href="#id2">概要</a></li>
-<li><a class="reference internal" href="#id3">手順</a><ul>
-<li><a class="reference internal" href="#jdk8">1.JDK8をインストール</a></li>
-<li><a class="reference internal" href="#id4">2.Mavenをダウンロード</a></li>
-<li><a class="reference internal" href="#id5">3.Mavenを展開して配置する</a></li>
-<li><a class="reference internal" href="#mavenpath">4.MavenへのPATHを追加する</a></li>
-<li><a class="reference internal" href="#mvn">5.mvnコマンドが使えることを確認する</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#reference">reference</a></li>
+<li><a class="reference internal" href="#">AWS ALB (Application Load Balancer)</a><ul>
+<li><a class="reference internal" href="#id1">概要</a></li>
+<li><a class="reference internal" href="#id2">主な特徴</a></li>
+<li><a class="reference internal" href="#id3">主な用途</a></li>
+<li><a class="reference internal" href="#aws-alb">AWS ALBの設定手順</a></li>
 </ul>
 </li>
 </ul>

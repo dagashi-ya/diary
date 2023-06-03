@@ -10,6 +10,7 @@
    :maxdepth: 1
    :caption: 活動日記:
 
+   Diary/sprint3
    Diary/sprint2
    Diary/sprint1
 
@@ -20,6 +21,8 @@ AWS仕様調査
    :maxdepth: 1
    :caption: AWS仕様調査:
 
+   AWSResearch/awsALB
+   AWSResearch/awsVPC
    AWSResearch/ecs
 
 Hands On
@@ -28,8 +31,9 @@ Hands On
    :maxdepth: 1
    :caption: Hands On:
 
-   HandsOn/apigatewayLambda1
+   HandsOn/ecsSpringBoot
    HandsOn/apigatewayLambda2
+   HandsOn/apigatewayLambda1
 
 環境構築
 ====================================
