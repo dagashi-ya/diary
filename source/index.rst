@@ -10,6 +10,9 @@
    :maxdepth: 1
    :caption: 活動日記:
 
+   Diary/epic1
+
+   Diary/sprint4
    Diary/sprint3
    Diary/sprint2
    Diary/sprint1
@@ -21,9 +24,20 @@ AWS仕様調査
    :maxdepth: 1
    :caption: AWS仕様調査:
 
+   AWSResearch/awsAppMesh   
    AWSResearch/awsALB
    AWSResearch/awsVPC
    AWSResearch/ecs
+
+CI/CD
+=================================
+
+.. toctree::
+   :maxdepth: 1
+   :caption: CI/CD:
+
+   CICD/cicd
+   CICD/gitHubActions
 
 Hands On
 ====================================

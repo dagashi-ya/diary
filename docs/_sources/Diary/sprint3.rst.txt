@@ -34,15 +34,18 @@ Sprint3(～6/7)
 ------------------
 1. | サーバレスSpringアプリケーション(1) ~ (3) 
    | チュートリアルを実施中
-   | :doc:`../HandsOn/apigatewayLambda1`
-   | :doc:`../HandsOn/apigatewayLambda2`
+   | :doc:`../HandsOn/ecsSpringBoot`
 
 
 2.仕様調査
 ------------------
 1. | ecsの仕様調査
-   | ecsの特徴整理を実施し、実際に構築をしてみている
    | :doc:`../AWSResearch/ecs`
+2. | aws VPCの使用調査
+   | :doc:`../AWSResearch/awsVPC`
+3. | aws ALBの使用調査
+   | :doc:`../AWSResearch/awsALB` 
+
 
 次スプリントの予定
 ====================
@@ -56,13 +59,8 @@ Sprint3(～6/7)
       - 実施内容
       - 説明
     * - 1
-      - チュートリアル
-      - | クラウドネイティブアプリケーションの基本
-        | `AWS ECS上に構築するSpringアプリケーション <https://news.mynavi.jp/techplus/series/AWS/>`_
+      - AWS仕様調査
+      - 、ECRの調査
     * - 2
-      - 仕様調査
-      - ECS、ECRの調査
-    * - 3
-      - AWS勉強
-      - AWSjamに向けてAWS全般の理解を深める
-
+      - CI/CD周りの調査
+      - Github action、

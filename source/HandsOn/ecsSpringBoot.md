@@ -118,3 +118,44 @@ Linuxサーバ環境でDockerコンテナを単純に運用する場合と比較
 | Security groups | ALBに関連付けるセキュリティグループを指定する。これにより、ALBへのインバウンドトラフィックの許可/拒否を制御する。 |
 | Target group | ALBがトラフィックをルーティングする対象の一覧。このグループには、リクエストを処理するEC2インスタンスなどが含まれる。 |
 | Health checks | ALBがターゲットグループのヘルスチェックを実行するための設定。例えば、チェックするパスや、成功と判定するHTTPステータスコードなどを設定する。 |
+
+
+## Springを使用したコンテナアプリケーションの実装方法
+- プライベートサブネット(Backend)アプリケーションのpom.xml
+
+```
+<dependencies>
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+  </dependency>
+</dependencies>
+```
+
+- パブリックサブネット(BFF)アプリケーションのpom.xml
+```
+<<dependencies>
+  <dependency>
+     <groupId>org.springframework.boot</groupId>
+     <artifactId>spring-boot-starter-web</artifactId>
+  </dependency>
+  <dependency>
+     <groupId>org.springframework.boot</groupId>
+     <artifactId>spring-boot-starter-thymeleaf</artifactId>
+  </dependency>
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-configuration-processor</artifactId>
+    <optional>true</optional>
+  </dependency>
+</dependencies>
+```
+
+- org.springframework.boot:spring-boot-starter-web
+この依存関係は、Spring BootによるWebアプリケーションの開発をサポートします。この依存関係を追加することで、Spring MVCなどのWebフレームワークを使用することが可能になります。
+
+- org.springframework.boot:spring-boot-starter-thymeleaf
+Thymeleafというテンプレートエンジンを使用するための依存関係です。Thymeleafは、HTMLテンプレートを処理し、動的なコンテンツを生成するための強力なツールです。
+
+- org.springframework.boot:spring-boot-configuration-processor (オプション)
+Spring Bootの構成情報を処理するためのオプションの依存関係です。この依存関係を追加すると、アプリケーションの構成ファイルをより簡単に読み込み、解析することができます。

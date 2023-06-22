@@ -382,6 +382,48 @@
 </table>
 </div>
 </section>
+<section id="spring">
+<h2>Springを使用したコンテナアプリケーションの実装方法<a class="headerlink" href="#spring" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>プライベートサブネット(Backend)アプリケーションのpom.xml</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">dependencies</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">dependency</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">groupId</span><span class="o">&gt;</span><span class="n">org</span><span class="o">.</span><span class="n">springframework</span><span class="o">.</span><span class="n">boot</span><span class="o">&lt;/</span><span class="n">groupId</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">artifactId</span><span class="o">&gt;</span><span class="n">spring</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">starter</span><span class="o">-</span><span class="n">web</span><span class="o">&lt;/</span><span class="n">artifactId</span><span class="o">&gt;</span>
+  <span class="o">&lt;/</span><span class="n">dependency</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">dependencies</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>パブリックサブネット(BFF)アプリケーションのpom.xml</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;&lt;</span><span class="n">dependencies</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">dependency</span><span class="o">&gt;</span>
+     <span class="o">&lt;</span><span class="n">groupId</span><span class="o">&gt;</span><span class="n">org</span><span class="o">.</span><span class="n">springframework</span><span class="o">.</span><span class="n">boot</span><span class="o">&lt;/</span><span class="n">groupId</span><span class="o">&gt;</span>
+     <span class="o">&lt;</span><span class="n">artifactId</span><span class="o">&gt;</span><span class="n">spring</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">starter</span><span class="o">-</span><span class="n">web</span><span class="o">&lt;/</span><span class="n">artifactId</span><span class="o">&gt;</span>
+  <span class="o">&lt;/</span><span class="n">dependency</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">dependency</span><span class="o">&gt;</span>
+     <span class="o">&lt;</span><span class="n">groupId</span><span class="o">&gt;</span><span class="n">org</span><span class="o">.</span><span class="n">springframework</span><span class="o">.</span><span class="n">boot</span><span class="o">&lt;/</span><span class="n">groupId</span><span class="o">&gt;</span>
+     <span class="o">&lt;</span><span class="n">artifactId</span><span class="o">&gt;</span><span class="n">spring</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">starter</span><span class="o">-</span><span class="n">thymeleaf</span><span class="o">&lt;/</span><span class="n">artifactId</span><span class="o">&gt;</span>
+  <span class="o">&lt;/</span><span class="n">dependency</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">dependency</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">groupId</span><span class="o">&gt;</span><span class="n">org</span><span class="o">.</span><span class="n">springframework</span><span class="o">.</span><span class="n">boot</span><span class="o">&lt;/</span><span class="n">groupId</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">artifactId</span><span class="o">&gt;</span><span class="n">spring</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">configuration</span><span class="o">-</span><span class="n">processor</span><span class="o">&lt;/</span><span class="n">artifactId</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">optional</span><span class="o">&gt;</span><span class="n">true</span><span class="o">&lt;/</span><span class="n">optional</span><span class="o">&gt;</span>
+  <span class="o">&lt;/</span><span class="n">dependency</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">dependencies</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>org.springframework.boot:spring-boot-starter-web
+この依存関係は、Spring BootによるWebアプリケーションの開発をサポートします。この依存関係を追加することで、Spring MVCなどのWebフレームワークを使用することが可能になります。</p></li>
+<li><p>org.springframework.boot:spring-boot-starter-thymeleaf
+Thymeleafというテンプレートエンジンを使用するための依存関係です。Thymeleafは、HTMLテンプレートを処理し、動的なコンテンツを生成するための強力なツールです。</p></li>
+<li><p>org.springframework.boot:spring-boot-configuration-processor (オプション)
+Spring Bootの構成情報を処理するためのオプションの依存関係です。この依存関係を追加すると、アプリケーションの構成ファイルをより簡単に読み込み、解析することができます。</p></li>
+</ul>
+</section>
 </section>
 
         </article>
@@ -445,6 +487,7 @@
 <li><a class="reference internal" href="#ecs">ECSアプリケーションの構築イメージ</a></li>
 <li><a class="reference internal" href="#aws-vpc">AWS VPCの設定</a></li>
 <li><a class="reference internal" href="#aws-alb">AWS ALBの設定手順</a></li>
+<li><a class="reference internal" href="#spring">Springを使用したコンテナアプリケーションの実装方法</a></li>
 </ul>
 </li>
 </ul>

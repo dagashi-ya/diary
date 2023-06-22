@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="検索" href="../search.html" /><link rel="next" title="Sprint1(～5/12)" href="sprint1.html" /><link rel="prev" title="Sprint3(～6/7)" href="sprint3.html" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="検索" href="../search.html" /><link rel="next" title="GitHub Actions" href="gitHubActions.html" /><link rel="prev" title="Amazon ECSの仕様調査" href="../AWSResearch/ecs.html" />
 
     <!-- Generated with Sphinx 5.0.2 and Furo 2023.03.27 -->
-        <title>Sprint2(～5/24) - diary ドキュメント</title>
+        <title>CI/CDについて - diary ドキュメント</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
@@ -156,17 +156,24 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">活動日記:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="epic1.html">マイクロサービスにおけるCI/CDのノウハウ整理</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sprint3.html">Sprint3(～6/7)</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Sprint2(～5/24)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sprint1.html">Sprint1(～5/12)</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Diary/epic1.html">マイクロサービスにおけるCI/CDのノウハウ整理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Diary/sprint4.html">Sprint4(～6/21)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Diary/sprint3.html">Sprint3(～6/7)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Diary/sprint2.html">Sprint2(～5/24)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Diary/sprint1.html">Sprint1(～5/12)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">AWS仕様調査:</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../AWSResearch/awsAppMesh.html">AWS App Mesh</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../AWSResearch/awsALB.html">AWS ALB (Application Load Balancer)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../AWSResearch/awsVPC.html">AWS VPC (Virtual Private Cloud)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../AWSResearch/ecs.html">Amazon ECSの仕様調査</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">CI/CD:</span></p>
+<ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">CI/CDについて</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gitHubActions.html">GitHub Actions</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Hands On:</span></p>
 <ul>
@@ -215,110 +222,126 @@
           </label>
         </div>
         <article role="main">
-          <section id="sprint2-5-24">
-<h1>Sprint2(～5/24)<a class="headerlink" href="#sprint2-5-24" title="Permalink to this heading">#</a></h1>
+          <section id="ci-cd">
+<h1>CI/CDについて<a class="headerlink" href="#ci-cd" title="Permalink to this heading">#</a></h1>
+<section id="ci-continuous-integration">
+<h2>1. CI（Continuous Integration：継続的インテグレーション）<a class="headerlink" href="#ci-continuous-integration" title="Permalink to this heading">#</a></h2>
+<p>CIとは、開発者が頻繁にコードを共有リポジトリにマージするプラクティスである。それにより、バグを早期に発見し、小さな変更点で頻繁にアプリケーションをビルド・テストすることが可能となる。このプラクティスは、バグの早期発見、コンフリクトの解消、コード品質の向上に寄与する。</p>
+</section>
+<section id="cd-continuous-delivery">
+<h2>2. CD（Continuous Delivery：継続的デリバリー）<a class="headerlink" href="#cd-continuous-delivery" title="Permalink to this heading">#</a></h2>
+<p>CDは、ソフトウェアを生産環境にリリースするプロセスを自動化するアプローチである。CIがビルドとテストの段階を自動化するのに対して、CDはデプロイを自動化し、アプリケーションを常にリリース可能な状態に保つ。</p>
+</section>
 <section id="id1">
-<h2>期間<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
-<p>5/12（水）～5/24（水）</p>
+<h2>3. CI/CDのツール<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<p>CI/CDの実現には、いくつかのツールが存在する。以下はその一部である。</p>
+<ul class="simple">
+<li><p>Jenkins: オープンソースであり、高度にカスタマイズ可能なCI/CDツールである。</p></li>
+<li><p>GitHub Actions: GitHub内で直接CI/CDパイプラインを設定・実行できる機能である。</p></li>
+<li><p>GitLab CI/CD: GitLab内でCI/CDパイプラインを設定・実行するための機能である。</p></li>
+<li><p>Travis CI: オープンソースプロジェクトに対して無料で提供されるCI/CDサービスである。</p></li>
+</ul>
 </section>
 <section id="id2">
-<h2>本スプリントの報告<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<h2>4. CI/CDのメリット<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<p>CI/CDの導入により、以下のメリットが得られる。</p>
+<ul class="simple">
+<li><p><strong>エラーの早期発見</strong>: 頻繁にコードのビルドとテストを行うことで、エラーやバグを早期に発見できる。</p></li>
+<li><p><strong>デプロイ時間の短縮</strong>: デプロイプロセスを自動化することにより、新機能やバグ修正をより早く顧客に提供できる。</p></li>
+<li><p><strong>開発の効率化</strong>: 手動でのビルドやデプロイプロセスを自動化することで、開発チームはより重要なタスクに集中できる。</p></li>
+</ul>
+</section>
 <section id="id3">
-<h3>進捗状況<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
-<div class="table-wrapper colwidths-given docutils container" id="id9">
-<table class="docutils align-default" id="id9">
-<caption><span class="caption-text">タスク一覧</span><a class="headerlink" href="#id9" title="このテーブルへのパーマリンク">#</a></caption>
-<colgroup>
-<col style="width: 9%" />
-<col style="width: 18%" />
-<col style="width: 73%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>No</p></th>
-<th class="head"><p>実施内容</p></th>
-<th class="head"><p>説明</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>1</p></td>
-<td><p>チュートリアル</p></td>
-<td><div class="line-block">
-<div class="line">サーバレスSpringアプリケーション(1) ~ (3) を実施中</div>
-<div class="line"><a class="reference external" href="https://news.mynavi.jp/techplus/series/AWS/">クラウドネイティブアプリケーションの基本</a></div>
-</div>
-</td>
-</tr>
-<tr class="row-odd"><td><p>2</p></td>
-<td><p>仕様調査</p></td>
-<td><p>ECS、ECRの調査を実施中</p></td>
-</tr>
-</tbody>
-</table>
-</div>
+<h2>5. そもそもデプロイ戦略について<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h2>
+<section id="id4">
+<h3>デプロイの種類<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>ブルーグリーンデプロイ</strong>:
+ブルーグリーンデプロイは、稼働環境（ブルー）と新環境（グリーン）の2つの環境を用意し、新環境に新しいバージョンをデプロイする方式である。デプロイが完了したら、トラフィックを新環境に切り替える。問題が生じた場合は、すぐに稼働環境に切り戻せるのが特徴である。</p></li>
+<li><p><strong>イミュータブルデプロイ</strong>:
+イミュータブルデプロイは、新しいバージョンを既存のサーバにアップデートするのではなく、新しいバージョンのための新しいサーバを作成し、そこにデプロイする方式である。こうすることで、既存の稼働環境を変更することなく新バージョンのデプロイを行うことができ、問題が生じた場合にも影響を最小限に留めることができる。</p></li>
+<li><p><strong>シンボリックデプロイ</strong>:
+シンボリックデプロイは、新旧バージョンを両方用意し、稼働するバージョンをシンボリックリンクで切り替える方式である。デプロイ後も旧バージョンが残っているため、何か問題が発生した場合にはすぐに旧バージョンに戻すことができる。</p></li>
+</ol>
+<p>4.<strong>ローリングデプロイ</strong>:
+ローリングデプロイは、サービスを一部ずつ更新する方式である。これにより、デプロイ中もサービスを続けることが可能となる。新しいバージョンに問題があった場合でも、全インスタンスが一度に影響を受けることがない。</p>
 </section>
 <section id="id5">
-<h3>1.チュートリアル<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h3>
-<ol class="arabic">
-<li><div class="line-block">
-<div class="line">サーバレスSpringアプリケーション(1) ~ (3)</div>
-<div class="line">チュートリアルを実施中</div>
-<div class="line"><a class="reference internal" href="../HandsOn/apigatewayLambda1.html"><span class="doc">API GatewayとLambdaを使ったサーバレスSpringアプリケーション(1)</span></a></div>
-<div class="line"><a class="reference internal" href="../HandsOn/apigatewayLambda2.html"><span class="doc">API GatewayとLambdaを使ったサーバレスSpringアプリケーション(2)</span></a></div>
-</div>
-</li>
-</ol>
-</section>
-<section id="id6">
-<h3>2.仕様調査<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h3>
-<ol class="arabic">
-<li><div class="line-block">
-<div class="line">ecsの仕様調査</div>
-<div class="line">ecsの特徴整理を実施し、実際に構築をしてみている</div>
-<div class="line"><a class="reference internal" href="../AWSResearch/ecs.html"><span class="doc">Amazon ECSの仕様調査</span></a></div>
-</div>
-</li>
-</ol>
-</section>
-</section>
-<section id="id7">
-<h2>次スプリントの予定<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h2>
-<section id="id8">
-<h3>実施予定<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h3>
-<div class="table-wrapper colwidths-given docutils container" id="id10">
-<table class="docutils align-default" id="id10">
-<caption><span class="caption-text">タスク一覧</span><a class="headerlink" href="#id10" title="このテーブルへのパーマリンク">#</a></caption>
-<colgroup>
-<col style="width: 9%" />
-<col style="width: 18%" />
-<col style="width: 73%" />
-</colgroup>
+<h3>デプロイ戦略の評価軸<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h3>
+<p>デプロイとは、必要なアプリケーションのリビジョンを所望の環境に反映し、特にWEBサービスであればリクエストを受け付けるようにすることである。これを実現する方法として、大きく以下の2つの方法がある。</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>No</p></th>
-<th class="head"><p>実施内容</p></th>
-<th class="head"><p>説明</p></th>
+<tr class="row-odd"><th class="head text-left"><p>実現方法</p></th>
+<th class="head text-left"><p>説明</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>1</p></td>
-<td><p>チュートリアル</p></td>
-<td><div class="line-block">
-<div class="line">クラウドネイティブアプリケーションの基本</div>
-<div class="line"><a class="reference external" href="https://news.mynavi.jp/techplus/series/AWS/">AWS ECS上に構築するSpringアプリケーション</a></div>
-</div>
-</td>
+<tr class="row-even"><td class="text-left"><p>In place</p></td>
+<td class="text-left"><p>インスタンスはそのままに、新しいリビジョンのアプリのみをその場で反映させる</p></td>
 </tr>
-<tr class="row-odd"><td><p>2</p></td>
-<td><p>仕様調査</p></td>
-<td><p>ECS、ECRの調査</p></td>
-</tr>
-<tr class="row-even"><td><p>3</p></td>
-<td><p>AWS勉強</p></td>
-<td><p>AWSjamに向けてAWS全般の理解を深める</p></td>
+<tr class="row-odd"><td class="text-left"><p>Blue/Green</p></td>
+<td class="text-left"><p>新しいリビジョンのアプリ用に、新しいインスタンスを構築して入れ替える</p></td>
 </tr>
 </tbody>
 </table>
 </div>
+<p>そして、実現方法とは別の軸で、反映のスピードで大まかに以下の2つの分類ができる。</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>反映スピード</p></th>
+<th class="head text-left"><p>説明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>一括</p></td>
+<td class="text-left"><p>全台を一斉に新しいリビジョンでデプロイする</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>ローリング</p></td>
+<td class="text-left"><p>1台ずつ新しいリビジョンをデプロイする</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>よくBlue/Greenデプロイを「新しいリビジョンのインスタンスを、今と同じ台数構築して一気に切り替える」というやり方のみで考えている方がいるが、昨今そういったデプロイ方式はRed/Blackデプロイとも呼ばれている。これは「Blue/GreenでAll at onceにデプロイする」という1つのやり方に過ぎない。</p>
 </section>
+</section>
+<section id="id6">
+<h2>6.そもそもテスト戦略について<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h2>
+<section id="id7">
+<h3>テストの種類<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>A/Bテスト</strong>: 主に製品の改善を目指して行われ、ユーザーの行動や反応を比較分析する。ユーザーには同時に二つの異なるバージョン（AとB）が提示され、どちらがより良いパフォーマンスを示すかを評価します。ユーザーエクスペリエンス、コンバージョン率、その他のKPI（重要業績評価指標）の改善を目指しています。</p></li>
+<li><p><strong>カナリアテスト</strong>: 新しいバージョンのソフトウェアが引き起こす可能性のある問題を早期に検出することを目的としています。新しいバージョンはまず一部のユーザー（「カナリア」）にだけリリースされ、問題が発生した場合はその影響を一部のユーザーに限定できます。問題がなければ新しいバージョンを全体のユーザーにリリースします。</p></li>
+<li><p><strong>シャドーテスト</strong>: シャドーテストは、新システムを本番環境と並行して運用し、同じデータや負荷を受けて正しく動作するかをテストします。実際のユーザーに影響を与えることなく、新システムのパフォーマンスや問題点を把握することが目的です。</p></li>
+</ol>
+</section>
+<section id="id8">
+<h3>テスト戦略の評価軸<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h3>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>目的</p></th>
+<th class="head text-left"><p>説明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>UI/IXの向上</p></td>
+<td class="text-left"><p>ユーザーエクスペリエンス、コンバージョン率、その他のKPI（重要業績評価指標）の改善を目的とする</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>障害の早期検知</p></td>
+<td class="text-left"><p>問題が発生した場合はその影響を一部のユーザーに限定する</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>そして、目的とは別の軸で、商用影響の有無で分類することが出来る</p>
+</section>
+</section>
+<section id="id9">
+<h2>参考<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h2>
+<p><a class="reference external" href="https://cloud.google.com/architecture/application-deployment-and-testing-strategies?hl=ja#canary_test_pattern">アプリケーションのデプロイとテストの戦略</a></p>
 </section>
 </section>
 
@@ -327,23 +350,23 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="sprint1.html">
+          <a class="next-page" href="gitHubActions.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Sprint1(～5/12)</div>
+                <div class="title">GitHub Actions</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="sprint3.html">
+          <a class="prev-page" href="../AWSResearch/ecs.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Sprint3(～6/7)</div>
+                <div class="title">Amazon ECSの仕様調査</div>
                 
               </div>
             </a>
@@ -377,18 +400,22 @@
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Sprint2(～5/24)</a><ul>
-<li><a class="reference internal" href="#id1">期間</a></li>
-<li><a class="reference internal" href="#id2">本スプリントの報告</a><ul>
-<li><a class="reference internal" href="#id3">進捗状況</a></li>
-<li><a class="reference internal" href="#id5">1.チュートリアル</a></li>
-<li><a class="reference internal" href="#id6">2.仕様調査</a></li>
+<li><a class="reference internal" href="#">CI/CDについて</a><ul>
+<li><a class="reference internal" href="#ci-continuous-integration">1. CI（Continuous Integration：継続的インテグレーション）</a></li>
+<li><a class="reference internal" href="#cd-continuous-delivery">2. CD（Continuous Delivery：継続的デリバリー）</a></li>
+<li><a class="reference internal" href="#id1">3. CI/CDのツール</a></li>
+<li><a class="reference internal" href="#id2">4. CI/CDのメリット</a></li>
+<li><a class="reference internal" href="#id3">5. そもそもデプロイ戦略について</a><ul>
+<li><a class="reference internal" href="#id4">デプロイの種類</a></li>
+<li><a class="reference internal" href="#id5">デプロイ戦略の評価軸</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id7">次スプリントの予定</a><ul>
-<li><a class="reference internal" href="#id8">実施予定</a></li>
+<li><a class="reference internal" href="#id6">6.そもそもテスト戦略について</a><ul>
+<li><a class="reference internal" href="#id7">テストの種類</a></li>
+<li><a class="reference internal" href="#id8">テスト戦略の評価軸</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#id9">参考</a></li>
 </ul>
 </li>
 </ul>
