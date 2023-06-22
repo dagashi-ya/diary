@@ -159,3 +159,4 @@ Thymeleafというテンプレートエンジンを使用するための依存�
 
 - org.springframework.boot:spring-boot-configuration-processor (オプション)
 Spring Bootの構成情報を処理するためのオプションの依存関係です。この依存関係を追加すると、アプリケーションの構成ファイルをより簡単に読み込み、解析することができます。
+
