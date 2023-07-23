@@ -8,7 +8,7 @@
 ## AWS ECSの概要とアプリケーション環境構成
 「Amazon Elastic Container Service (Amazon ECS)」は、クラスタ単位でDockerコンテナを簡単にスケーラブルかつ高速に実行／停止／管理できるコンテナ管理サービスである。
 
-Linuxサーバ環境でDockerコンテナを単純に運用する場合と比較して、ECSではリージョン内の複数のアベイラビリティゾーンをまたいでコンテナを実行できるため、可用性の高い運用が可能である。2019年1月時点では、1つまたは複数のEC2上にクラスタを構築し、その上に任意のレジストリにあるDockerイメージをデプロイする「EC2起動型」と、実行するクラスタ自体をマネージドとしてAWSが自動で管理し、コンテナだけを意識する「Fargate」に分類できる。
+Linuxサーバ環境でDockerコンテナを単純に運用する場合と比較して、ECSではリージョン内の複数のアベイラビリティゾーンをまたいでコンテナを実行できるため、可用性の高い運用が可能。2019年1月時点では、1つまたは複数のEC2上にクラスタを構築し、その上に任意のレジストリにあるDockerイメージをデプロイする「EC2起動型」と、実行するクラスタ自体をマネージドとしてAWSが自動で管理し、コンテナだけを意識する「Fargate」に分類できる。
 
 本稿では理解を深めるために、EC2クラスタ型でECSアプリケーションを構築するものとし、以下のようなイメージでECSアプリケーションを構築する形式とする。
 
@@ -121,6 +121,8 @@ Linuxサーバ環境でDockerコンテナを単純に運用する場合と比較
 
 
 ## Springを使用したコンテナアプリケーションの実装方法
+### pom.xmlの設定
+
 - プライベートサブネット(Backend)アプリケーションのpom.xml
 
 ```
@@ -152,11 +154,160 @@ Linuxサーバ環境でDockerコンテナを単純に運用する場合と比較
 ```
 
 - org.springframework.boot:spring-boot-starter-web
-この依存関係は、Spring BootによるWebアプリケーションの開発をサポートします。この依存関係を追加することで、Spring MVCなどのWebフレームワークを使用することが可能になります。
+この依存関係は、Spring BootによるWebアプリケーションの開発をサポートします。この依存関係を追加することで、Spring MVCなどのWebフレームワークを使用することが可能になる。
 
 - org.springframework.boot:spring-boot-starter-thymeleaf
-Thymeleafというテンプレートエンジンを使用するための依存関係です。Thymeleafは、HTMLテンプレートを処理し、動的なコンテンツを生成するための強力なツールです。
+Thymeleafというテンプレートエンジンを使用するための依存関係です。Thymeleafは、HTMLテンプレートを処理し、動的なコンテンツを生成するための強力なツール。
 
 - org.springframework.boot:spring-boot-configuration-processor (オプション)
-Spring Bootの構成情報を処理するためのオプションの依存関係です。この依存関係を追加すると、アプリケーションの構成ファイルをより簡単に読み込み、解析することができます。
+Spring Bootの構成情報を処理するためのオプションの依存関係です。この依存関係を追加すると、アプリケーションの構成ファイルをより簡単に読み込み、解析することができる。
 
+### アプリケーションの実装(backend)
+
+- Backendアプリケーションのリクエストを受け付けるControllerクラス
+プライベートサブネットでバックエンドAPIサーバとして、「/api/v1/users」というURLのパスでリクエストを受け取り、ユーザのリストを返却する簡単なアプリケーションを作成する。
+
+```
+package org.debugroom.mynavi.sample.ecs.backend.app.web;
+
+import org.debugroom.mynavi.sample.ecs.backend.app.model.User;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/v1")
+public class BackendRestController {
+
+    @GetMapping("/users")
+    public List<User> getUsers(){
+        List<User> users = new ArrayList<>();
+        users.add(User.builder().userId("1").userName("Taro").build());
+        users.add(User.builder().userId("2").userName("Jiro").build());
+        return users;
+    }
+}
+```
+
+- BackendアプリケーションのSpirngBoot起動クラス
+
+```
+package org.debugroom.mynavi.sample.ecs.backend.config;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+
+@SpringBootApplication
+public class App {
+
+    public static void main(String[] args) {
+        SpringApplication.run(App.class, args);
+    }
+
+}
+```
+
+
+- BackendアプリケーションのWebMVC設定クラス
+
+```
+package org.debugroom.mynavi.sample.ecs.backend.config;
+
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+@ComponentScan("org.debugroom.mynavi.sample.ecs.backend.app.web")
+public class MvcConfig implements WebMvcConfigurer {
+}
+```
+
+
+- application.yml
+```
+applicaiton.yml
+server:
+  servlet:
+   context-path: /backend
+```
+
+### アプリケーションの実装(bff)
+
+- bffアプリケーションのリクエストを受け付けるControllerクラス
+
+```
+package org.debugroom.mynavi.sample.ecs.backendforfrontend.app.web;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.client.RestOperations;
+
+@Controller
+public class BackendForFrontendController {
+
+    @Autowired
+    RestOperations restOperations;
+
+    @RequestMapping(method = RequestMethod.GET, value = "users")
+    public String getUsers(Model model){
+        String service = "/backend/api/v1/users";
+        model.addAttribute("users",
+            restOperations.getForObject(service, User[].class));
+        return "users";
+    }
+}
+```
+## Dockerコンテナ
+
+- Backendアプリケーションのプロジェクトに作成するDockerfile
+
+```
+# Dockerfile for sample service using embedded tomcat server
+
+# セキュリティと安定性のため、CentOS 7をベースにします
+FROM centos:centos7
+
+# メンテナの情報を記載します
+MAINTAINER debugroom
+
+# 必要なパッケージをインストールします: OpenJDK, wget, tar, iproute, git
+RUN yum install -y \
+       java-1.8.0-openjdk \
+       java-1.8.0-openjdk-devel \
+       wget tar iproute git
+
+# Apache Mavenをインストールするためのレポジトリを追加します
+RUN wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+
+# レポジトリの設定を調整します
+RUN sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
+
+# Apache Mavenをインストールします
+RUN yum install -y apache-maven
+
+# 環境変数JAVA_HOMEを設定します
+ENV JAVA_HOME /etc/alternatives/jre
+
+# サンプルアプリケーションをcloneします
+RUN git clone https://github.com/taiyakiyasan/tutorial-aws-ecs-app.git /var/local/mynavi-sample-aws-ecs
+
+# pom.xmlを使ってMavenのインストールを行います
+RUN mvn install -f /var/local/mynavi-sample-aws-ecs/pom.xml
+
+# システムの時間設定を退避します
+RUN cp /etc/localtime /etc/localtime.org
+
+# システムのタイムゾーンを日本（Asia/Tokyo）に設定します
+RUN ln -sf  /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+
+# ポート8080を公開します
+EXPOSE 8080
+
+# 起動コマンドを設定します。ここではJavaのjarファイルを実行します
+CMD java -jar -Dspring.profiles.active=production /var/local/mynavi-sample-aws-ecs/backend/target/mynavi-sample-aws-ecs-backend-0.0.1-SNAPSHOT.jar
+```

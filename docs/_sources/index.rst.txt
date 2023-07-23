@@ -49,6 +49,14 @@ Hands On
    HandsOn/apigatewayLambda2
    HandsOn/apigatewayLambda1
 
+箸休め
+====================================
+.. toctree::
+   :maxdepth: 1
+   :caption: 箸休め:
+
+   FreeStudy/sre
+
 環境構築
 ====================================
 .. toctree::

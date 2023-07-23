@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="検索" href="../search.html" /><link rel="next" title="Maven設定手順" href="maven.html" /><link rel="prev" title="Sphinxでの文章の書き方(reStructuredText)" href="reStructuredText.html" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="検索" href="../search.html" /><link rel="next" title="sphinx構築手順" href="../InitialBuild/sphinx.html" /><link rel="prev" title="API GatewayとLambdaを使ったサーバレスSpringアプリケーション(1)" href="../HandsOn/apigatewayLambda1.html" />
 
     <!-- Generated with Sphinx 5.0.2 and Furo 2023.03.27 -->
-        <title>Terraform実行環境構築 - diary ドキュメント</title>
+        <title>SRE - diary ドキュメント</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
@@ -182,16 +182,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../HandsOn/apigatewayLambda1.html">API GatewayとLambdaを使ったサーバレスSpringアプリケーション(1)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">箸休め:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../FreeStudy/sre.html">SRE</a></li>
+<ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">SRE</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">環境構築:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="sphinx.html">sphinx構築手順</a></li>
-<li class="toctree-l1"><a class="reference internal" href="intellij.html">IntelliJ IDEA構築手順</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reStructuredText.html">Sphinxでの文章の書き方(reStructuredText)</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Terraform実行環境構築</a></li>
-<li class="toctree-l1"><a class="reference internal" href="maven.html">Maven設定手順</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../InitialBuild/sphinx.html">sphinx構築手順</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../InitialBuild/intellij.html">IntelliJ IDEA構築手順</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../InitialBuild/reStructuredText.html">Sphinxでの文章の書き方(reStructuredText)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../InitialBuild/terraform.html">Terraform実行環境構築</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../InitialBuild/maven.html">Maven設定手順</a></li>
 </ul>
 
 </div>
@@ -226,181 +226,62 @@
           </label>
         </div>
         <article role="main">
-          <section id="terraform">
-<h1>Terraform実行環境構築<a class="headerlink" href="#terraform" title="Permalink to this heading">#</a></h1>
+          <section id="sre">
+<h1>SRE<a class="headerlink" href="#sre" title="Permalink to this heading">#</a></h1>
 <section id="id1">
-<h2>前提<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
-<ul class="simple">
-<li><dl class="simple">
-<dt>以下の環境で構築を実施</dt><dd><ul>
-<li><p>WorkSpaces（Amazon Linux release 2 (Karoo)）</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li></li>
-</ul>
-</section>
+<h2>1 SREの原則<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
 <section id="id2">
-<h2>事前準備<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
-<ul class="simple">
-<li><p>AWSアカウントの作成</p></li>
-<li><dl class="simple">
-<dt>terraformからAWSにアクセスするためのアクセスキー/シークレットアクセスキー</dt><dd><ol class="arabic simple">
-<li><p>AWSコンソールにログイン</p></li>
-<li><p>サービス「IAM」を選択</p></li>
-<li><p>左ペインからユーザーを選択し、自分のユーザー名を選択</p></li>
-<li><p>認証情報のタブから「アクセスキーの作成」をクリック</p></li>
-<li><p>作成されたアクセスキーとシークレットアクセスキーをコピー</p></li>
-</ol>
-</dd>
-</dl>
-</li>
-</ul>
-</section>
+<h3>1.1 リスクの受容<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
+<p>Googleは完全な信頼性を目指すサービスを構築していると一部で考えられているかもしれないが、事実として、ある程度以上の信頼性はむしろサービスやその利用者にとってマイナスとなることがある。これは過剰な信頼性がコストを増大させ、新機能の開発やプロダクトの提供速度を制限するためである。ユーザーは通常、サービスの高信頼性と極端な信頼性の差異を感じない。それはユーザーの体験が、移動体通信ネットワークや使用デバイスといった、より低い信頼性を持つ要素によって左右されるからだ。したがって、サイトリライアビリティエンジニアリングでは、稼働時間の最大化よりも、可用性のリスクとイノベーションの速度やサービス運用の効率性とのバランスを取ることを重視している。</p>
 <section id="id3">
-<h2>構築手順<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h2>
-<section id="aws-cli">
-<h3>AWS CLIインストール<a class="headerlink" href="#aws-cli" title="Permalink to this heading">#</a></h3>
+<h4>リスクの管理<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
+<p>信頼性のないシステムは急速にユーザーの信頼を失うことになるため、システム障害の可能性は減らさなければならない。しかし、システムを構築すればするほど、信頼性とコストの関係は比例しない。信頼性を増し続けると、一定の増加率よりもコストが急速に増大することもある。この増大するコストには以下の二つの要素が含まれる。</p>
 <ol class="arabic simple">
-<li><p>AWS CLI インストールファイルDL</p></li>
+<li><p><strong>冗長なマシン／コンピュートリソースのコスト</strong> : 設備の冗長化にコストを投入することにより、定期的なメンテナンスや予定外のメンテナンスの際にシステムをオフラインにせず、最小限のデータの耐久性を保証するためのパリティコードブロックを保存するための領域を確保することが可能となる。</p></li>
+<li><p><strong>機会のコスト</strong> : ユーザーが直接操作する機能ではなく、リスクを減らすためのシステムや機能を構築するために組織がエンジニアリングリソースを割り当てることにより発生するコスト。このような作業を行うエンジニアは、エンドユーザーが使う新機能や新プロダクトのための作業は行わなくなる。</p></li>
 </ol>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl <span class="s2">&quot;https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip&quot;</span> -o ~/awscliv2.zip
-</pre></div>
-</div>
-<ol class="arabic simple" start="2">
-<li><p>インストールファイル展開</p></li>
-</ol>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>unzip ~/awscliv2.zip
-</pre></div>
-</div>
-<ol class="arabic simple" start="3">
-<li><p>AWS CLI インストール</p></li>
-</ol>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo ~/aws/install
-</pre></div>
-</div>
-<ol class="arabic simple" start="4">
-<li><p>AWS CLIへの設定情報保存</p></li>
-</ol>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>aws configure --profile <span class="o">{</span>プロファイル名<span class="o">}</span>
-</pre></div>
-</div>
-<p>以下のように質問に答える。</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>AWS Access Key ID <span class="o">[</span>None<span class="o">]</span>: <span class="o">{</span>事前準備で用意したアクセスキー<span class="o">}</span>
-AWS Secret Access Key <span class="o">[</span>None<span class="o">]</span>: <span class="o">{</span>事前準備で用意したシークレットアクセスキー<span class="o">}</span>
-Default region name <span class="o">[</span>None<span class="o">]</span>: ap-northeast-1
-Default output format <span class="o">[</span>None<span class="o">]</span>: json
-</pre></div>
-</div>
+<p>SREでは、サービスの信頼性を管理する主要な部分はリスクを管理することによって行う。リスクは連続的なものと捉え、Googleのシステムの信頼性を高めるためのエンジニアリングとサービスの適切な障害許容レベルの設定は等しく重要である。これにより、コストとメリットの分析を行い、リスク曲線上で検索、Ads、Gmail、Photosなどのサービスをどこに配置するかを決定できる。</p>
+<p>サービスの取るリスクと、そのビジネスが許容できるリスクを意識的に合わせることが目標である。信頼性を適切に保つ努力は行うが、無理に信頼性を高めすぎることは避ける。例えば、可用性の目標を99.99%と設定した場合、その目標を超えようとするが、大幅に超えることは望まない。その理由は、大幅に超えることで、新機能の追加や技術的な負債の払拭、運用コストの低減などのチャンスを逃す可能性があるからである。したがって、可用性の目標は下限だけでなく上限としても設定する。このような視点を持つことで、明確に、そしてより深くリスクを考慮した運用が可能となる。</p>
 </section>
 <section id="id4">
-<h3>Terraformインストール<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
-<div class="admonition note">
-<p class="admonition-title">注釈</p>
-<p>今回はtfenvというツールを使ってTerraformをインストールする</p>
-<p>tfenvとはTerraformを複数バージョンインストールして、切り替えて使用できるツール</p>
-</div>
-<ol class="arabic simple">
-<li><p>Gitリポジトリーをclone</p></li>
-</ol>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/tfutils/tfenv.git ~/.tfenv
-</pre></div>
-</div>
-<ol class="arabic simple" start="2">
-<li><p>パスを通す</p></li>
-</ol>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>vi ~/.bashrc
-</pre></div>
-</div>
-<p>以下のように追記する</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$PATH</span><span class="s2">:</span><span class="nv">$HOME</span><span class="s2">/.tfenv/bin&quot;</span>
-</pre></div>
-</div>
-<p>設定を読み込む</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span> .bashrc
-</pre></div>
-</div>
-<ol class="arabic simple" start="3">
-<li><p>tfenvでTerraformのインストール可能バージョンの確認</p></li>
-</ol>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>tfenv list-remote
-</pre></div>
-</div>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="m">1</span>.5.0-alpha20230504
-<span class="m">1</span>.5.0-alpha20230405
-<span class="m">1</span>.4.6
-<span class="m">1</span>.4.5
-<span class="m">1</span>.4.4
-</pre></div>
-</div>
-<p>今回は、最新かつ安定バージョンの「1.4.6」をインストールする</p>
-<ol class="arabic simple" start="4">
-<li><p>tfenv インストール</p></li>
-</ol>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>tfenv install <span class="m">1</span>.4.6
-</pre></div>
-</div>
-<ol class="arabic simple" start="5">
-<li><p>使用するTerraformバージョンの指定</p></li>
-</ol>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>tfenv use <span class="m">1</span>.4.6
-</pre></div>
-</div>
-<p>設定を確認する</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>tfenv list
-</pre></div>
-</div>
-<ol class="arabic simple" start="6">
-<li><p>オートコンプリートの有効化</p></li>
-</ol>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>terraform -install-autocomplete
-</pre></div>
-</div>
+<h4>サービスリスクの計測<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
+<p>Googleでは、システムの最適化において客観的なメトリクスが非常に有益であると考えている。これにより、現状のパフォーマンスの評価や時間の経過に伴う改善や劣化の追跡が可能となる。特にサービスのリスクについては、潜在的な要素を一つのメトリクスにまとめることが理想的である。しかし、サービスの障害はユーザーの不満、損害、信頼の喪失、直接的または間接的な売上の損失、ブランドや評価への影響など、さまざまな要素を含むため、その全てを計測することは困難である。そのため、Googleでは計画外の停止時間に注目している。</p>
+<p>可用性=稼働時間/（稼働時間+停止時間）</p>
+<p>可用性は通常、「9」の数で示され、99.9%や99.99%、99.999%などと表現される。この数字が増えるごとに、100%の可用性に近づく。しかし、Googleでは時間を基にしたメトリクスは意味をなさない（※）と考えており、代わりにリクエスト成功率を基に可用性を定義している。つまり、成功したリクエスト数を総リクエスト数で割ることで可用性を計算する。<br>
+※世界中のどこかからサービスのトラフィックの少なくとも一部を提供している可能性は高くなっているため。少なくとも部分的には、常に「稼働中」になっている<br></p>
+<p>可用性=成功したリクエスト数/総リクエスト数</p>
+<p>バッチ処理やパイプライン、ストレージ、トランザクションシステムなどのシステムでも、作業の成否を示す方法が明確に定義されていれば、可用性のメトリクスを適用することが可能である。たとえば、バッチ処理で顧客データベースの内容を取り出し、変換してデータウェアハウスに挿入する場合、処理に成功したレコード数と失敗したレコード数という観点で定義されたリクエスト成功率を使用することで、可用性のメトリクスを計算することが可能である。</p>
+<p>Googleでは、サービスの可用性のターゲットを四半期単位で設定し、そのパフォーマンスを週単位、もしくは日単位で追跡している。これにより、対処する価値のある特異点を見つけ、追跡し、修復することができ、高レベルの可用性の目標を達成することが可能となる</p>
 </section>
-<section id="git-secrets">
-<h3>git-secretsインストール<a class="headerlink" href="#git-secrets" title="Permalink to this heading">#</a></h3>
-<div class="admonition note">
-<p class="admonition-title">注釈</p>
-<p>git-secretsを利用する事により、AWSアクセスキー、AWSシークレットキーをgitリポジトリにコミットできないようにコミット直前にチェックできるようになる</p>
-</div>
+<section id="id5">
+<h4>サービスのリスク許容度<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h4>
 <ol class="arabic simple">
-<li><p>Gitリポジトリーをclone</p></li>
+<li><p><strong>コンシューマサービスにおけるリスク許容度の明確化</strong></p></li>
 </ol>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/awslabs/git-secrets.git ~/.git-secrets
-</pre></div>
-</div>
-<ol class="arabic simple" start="2">
-<li><p>git-secrets インストール</p></li>
-</ol>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> ~/.git-secrets/ <span class="o">&amp;&amp;</span> sudo make install
-</pre></div>
-</div>
-<ol class="arabic simple" start="3">
-<li><p>git-secrets をAWS用に設定</p></li>
-</ol>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git secrets --register-aws --global
-</pre></div>
-</div>
-<ol class="arabic simple" start="4">
-<li><p>Gitのカスタム</p></li>
-</ol>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git secrets --install ~/.git-templates/git-secrets
-git config --global init.templatedir <span class="s1">&#39;~/.git-templates/git-secrets&#39;</span>
-</pre></div>
-</div>
-<p>5. 設定確認
-以下のサイトを参考に、シークレットキーがcommitできないことを確認する</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://qiita.com/jqtype/items/9196e047eddb53d07a91#%E5%9F%BA%E6%9C%AC%E7%9A%84%E3%81%AA%E4%BD%BF%E3%81%84%E6%96%B9">基本的な使い方</a></p></li>
-</ul>
 </section>
 </section>
 <section id="id6">
-<h2>参考<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h2>
-<ul class="simple">
-<li><p><a class="reference external" href="https://qiita.com/mttk030/items/fe11afddce39b9e5e60f">本番環境に対応したTerraform運用環境構築</a></p></li>
-</ul>
+<h3>1.2 サービスレベルの目標<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h3>
+</section>
+<section id="id7">
+<h3>1.3 トイルの撲滅<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h3>
+</section>
+<section id="id8">
+<h3>1.4 分散システムのモニタリング<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h3>
+</section>
+<section id="google">
+<h3>1.5 Googleにおける自動化の進化<a class="headerlink" href="#google" title="Permalink to this heading">#</a></h3>
+</section>
+<section id="id9">
+<h3>1.6 リリースエンジニアリング<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h3>
+</section>
+<section id="id10">
+<h3>1.7 単純さ<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h3>
+</section>
+</section>
+<section id="id11">
+<h2>参考<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h2>
+<p>https://sre.google/sre-book/table-of-contents/</p>
 </section>
 </section>
 
@@ -409,23 +290,23 @@ git config --global init.templatedir <span class="s1">&#39;~/.git-templates/git-
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="maven.html">
+          <a class="next-page" href="../InitialBuild/sphinx.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Maven設定手順</div>
+                <div class="title">sphinx構築手順</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="reStructuredText.html">
+          <a class="prev-page" href="../HandsOn/apigatewayLambda1.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Sphinxでの文章の書き方(reStructuredText)</div>
+                <div class="title">API GatewayとLambdaを使ったサーバレスSpringアプリケーション(1)</div>
                 
               </div>
             </a>
@@ -459,16 +340,23 @@ git config --global init.templatedir <span class="s1">&#39;~/.git-templates/git-
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Terraform実行環境構築</a><ul>
-<li><a class="reference internal" href="#id1">前提</a></li>
-<li><a class="reference internal" href="#id2">事前準備</a></li>
-<li><a class="reference internal" href="#id3">構築手順</a><ul>
-<li><a class="reference internal" href="#aws-cli">AWS CLIインストール</a></li>
-<li><a class="reference internal" href="#id4">Terraformインストール</a></li>
-<li><a class="reference internal" href="#git-secrets">git-secretsインストール</a></li>
+<li><a class="reference internal" href="#">SRE</a><ul>
+<li><a class="reference internal" href="#id1">1 SREの原則</a><ul>
+<li><a class="reference internal" href="#id2">1.1 リスクの受容</a><ul>
+<li><a class="reference internal" href="#id3">リスクの管理</a></li>
+<li><a class="reference internal" href="#id4">サービスリスクの計測</a></li>
+<li><a class="reference internal" href="#id5">サービスのリスク許容度</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id6">参考</a></li>
+<li><a class="reference internal" href="#id6">1.2 サービスレベルの目標</a></li>
+<li><a class="reference internal" href="#id7">1.3 トイルの撲滅</a></li>
+<li><a class="reference internal" href="#id8">1.4 分散システムのモニタリング</a></li>
+<li><a class="reference internal" href="#google">1.5 Googleにおける自動化の進化</a></li>
+<li><a class="reference internal" href="#id9">1.6 リリースエンジニアリング</a></li>
+<li><a class="reference internal" href="#id10">1.7 単純さ</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id11">参考</a></li>
 </ul>
 </li>
 </ul>

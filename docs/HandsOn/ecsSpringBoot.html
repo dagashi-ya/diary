@@ -181,6 +181,10 @@
 <li class="toctree-l1"><a class="reference internal" href="apigatewayLambda2.html">API GatewayとLambdaを使ったサーバレスSpringアプリケーション(2)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="apigatewayLambda1.html">API GatewayとLambdaを使ったサーバレスSpringアプリケーション(1)</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">箸休め:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../FreeStudy/sre.html">SRE</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">環境構築:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../InitialBuild/sphinx.html">sphinx構築手順</a></li>
@@ -233,7 +237,7 @@
 <section id="aws-ecs">
 <h2>AWS ECSの概要とアプリケーション環境構成<a class="headerlink" href="#aws-ecs" title="Permalink to this heading">#</a></h2>
 <p>「Amazon Elastic Container Service (Amazon ECS)」は、クラスタ単位でDockerコンテナを簡単にスケーラブルかつ高速に実行／停止／管理できるコンテナ管理サービスである。</p>
-<p>Linuxサーバ環境でDockerコンテナを単純に運用する場合と比較して、ECSではリージョン内の複数のアベイラビリティゾーンをまたいでコンテナを実行できるため、可用性の高い運用が可能である。2019年1月時点では、1つまたは複数のEC2上にクラスタを構築し、その上に任意のレジストリにあるDockerイメージをデプロイする「EC2起動型」と、実行するクラスタ自体をマネージドとしてAWSが自動で管理し、コンテナだけを意識する「Fargate」に分類できる。</p>
+<p>Linuxサーバ環境でDockerコンテナを単純に運用する場合と比較して、ECSではリージョン内の複数のアベイラビリティゾーンをまたいでコンテナを実行できるため、可用性の高い運用が可能。2019年1月時点では、1つまたは複数のEC2上にクラスタを構築し、その上に任意のレジストリにあるDockerイメージをデプロイする「EC2起動型」と、実行するクラスタ自体をマネージドとしてAWSが自動で管理し、コンテナだけを意識する「Fargate」に分類できる。</p>
 <p>本稿では理解を深めるために、EC2クラスタ型でECSアプリケーションを構築するものとし、以下のようなイメージでECSアプリケーションを構築する形式とする。</p>
 <p><img alt="ECSアプリケーションの構築イメージ " src="../_images/ecsSpringBootOutline.jpg" /></p>
 </section>
@@ -392,6 +396,8 @@
 </section>
 <section id="spring">
 <h2>Springを使用したコンテナアプリケーションの実装方法<a class="headerlink" href="#spring" title="Permalink to this heading">#</a></h2>
+<section id="pom-xml">
+<h3>pom.xmlの設定<a class="headerlink" href="#pom-xml" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p>プライベートサブネット(Backend)アプリケーションのpom.xml</p></li>
 </ul>
@@ -425,12 +431,166 @@
 </div>
 <ul class="simple">
 <li><p>org.springframework.boot:spring-boot-starter-web
-この依存関係は、Spring BootによるWebアプリケーションの開発をサポートします。この依存関係を追加することで、Spring MVCなどのWebフレームワークを使用することが可能になります。</p></li>
+この依存関係は、Spring BootによるWebアプリケーションの開発をサポートします。この依存関係を追加することで、Spring MVCなどのWebフレームワークを使用することが可能になる。</p></li>
 <li><p>org.springframework.boot:spring-boot-starter-thymeleaf
-Thymeleafというテンプレートエンジンを使用するための依存関係です。Thymeleafは、HTMLテンプレートを処理し、動的なコンテンツを生成するための強力なツールです。</p></li>
+Thymeleafというテンプレートエンジンを使用するための依存関係です。Thymeleafは、HTMLテンプレートを処理し、動的なコンテンツを生成するための強力なツール。</p></li>
 <li><p>org.springframework.boot:spring-boot-configuration-processor (オプション)
-Spring Bootの構成情報を処理するためのオプションの依存関係です。この依存関係を追加すると、アプリケーションの構成ファイルをより簡単に読み込み、解析することができます。</p></li>
+Spring Bootの構成情報を処理するためのオプションの依存関係です。この依存関係を追加すると、アプリケーションの構成ファイルをより簡単に読み込み、解析することができる。</p></li>
 </ul>
+</section>
+<section id="backend">
+<h3>アプリケーションの実装(backend)<a class="headerlink" href="#backend" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Backendアプリケーションのリクエストを受け付けるControllerクラス
+プライベートサブネットでバックエンドAPIサーバとして、「/api/v1/users」というURLのパスでリクエストを受け取り、ユーザのリストを返却する簡単なアプリケーションを作成する。</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">package</span> <span class="n">org</span><span class="o">.</span><span class="n">debugroom</span><span class="o">.</span><span class="n">mynavi</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">ecs</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">web</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">org.debugroom.mynavi.sample.ecs.backend.app.model.User</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.GetMapping</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RequestMapping</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RestController</span><span class="p">;</span>
+
+<span class="nd">@RestController</span>
+<span class="nd">@RequestMapping</span><span class="p">(</span><span class="s2">&quot;/api/v1&quot;</span><span class="p">)</span>
+<span class="n">public</span> <span class="k">class</span> <span class="nc">BackendRestController</span> <span class="p">{</span>
+
+    <span class="nd">@GetMapping</span><span class="p">(</span><span class="s2">&quot;/users&quot;</span><span class="p">)</span>
+    <span class="n">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">getUsers</span><span class="p">(){</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">users</span> <span class="o">=</span> <span class="n">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+        <span class="n">users</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">builder</span><span class="p">()</span><span class="o">.</span><span class="n">userId</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">userName</span><span class="p">(</span><span class="s2">&quot;Taro&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">());</span>
+        <span class="n">users</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">builder</span><span class="p">()</span><span class="o">.</span><span class="n">userId</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">userName</span><span class="p">(</span><span class="s2">&quot;Jiro&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">());</span>
+        <span class="k">return</span> <span class="n">users</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>BackendアプリケーションのSpirngBoot起動クラス</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">package</span> <span class="n">org</span><span class="o">.</span><span class="n">debugroom</span><span class="o">.</span><span class="n">mynavi</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">ecs</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">config</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">org.springframework.boot.SpringApplication</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.boot.autoconfigure.SpringBootApplication</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.context.annotation.ComponentScan</span><span class="p">;</span>
+
+<span class="nd">@SpringBootApplication</span>
+<span class="n">public</span> <span class="k">class</span> <span class="nc">App</span> <span class="p">{</span>
+
+    <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">main</span><span class="p">(</span><span class="n">String</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">SpringApplication</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">App</span><span class="o">.</span><span class="n">class</span><span class="p">,</span> <span class="n">args</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>BackendアプリケーションのWebMVC設定クラス</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">package</span> <span class="n">org</span><span class="o">.</span><span class="n">debugroom</span><span class="o">.</span><span class="n">mynavi</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">ecs</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">config</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">org.springframework.context.annotation.ComponentScan</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.context.annotation.Configuration</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.servlet.config.annotation.WebMvcConfigurer</span><span class="p">;</span>
+
+<span class="nd">@Configuration</span>
+<span class="nd">@ComponentScan</span><span class="p">(</span><span class="s2">&quot;org.debugroom.mynavi.sample.ecs.backend.app.web&quot;</span><span class="p">)</span>
+<span class="n">public</span> <span class="k">class</span> <span class="nc">MvcConfig</span> <span class="n">implements</span> <span class="n">WebMvcConfigurer</span> <span class="p">{</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>application.yml</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">applicaiton</span><span class="o">.</span><span class="n">yml</span>
+<span class="n">server</span><span class="p">:</span>
+  <span class="n">servlet</span><span class="p">:</span>
+   <span class="n">context</span><span class="o">-</span><span class="n">path</span><span class="p">:</span> <span class="o">/</span><span class="n">backend</span>
+</pre></div>
+</div>
+</section>
+<section id="bff">
+<h3>アプリケーションの実装(bff)<a class="headerlink" href="#bff" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>bffアプリケーションのリクエストを受け付けるControllerクラス</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">package</span> <span class="n">org</span><span class="o">.</span><span class="n">debugroom</span><span class="o">.</span><span class="n">mynavi</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">ecs</span><span class="o">.</span><span class="n">backendforfrontend</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">web</span><span class="p">;</span>
+
+<span class="kn">import</span> <span class="nn">org.springframework.beans.factory.annotation.Autowired</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.stereotype.Controller</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.ui.Model</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RequestMapping</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RequestMethod</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.client.RestOperations</span><span class="p">;</span>
+
+<span class="nd">@Controller</span>
+<span class="n">public</span> <span class="k">class</span> <span class="nc">BackendForFrontendController</span> <span class="p">{</span>
+
+    <span class="nd">@Autowired</span>
+    <span class="n">RestOperations</span> <span class="n">restOperations</span><span class="p">;</span>
+
+    <span class="nd">@RequestMapping</span><span class="p">(</span><span class="n">method</span> <span class="o">=</span> <span class="n">RequestMethod</span><span class="o">.</span><span class="n">GET</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;users&quot;</span><span class="p">)</span>
+    <span class="n">public</span> <span class="n">String</span> <span class="n">getUsers</span><span class="p">(</span><span class="n">Model</span> <span class="n">model</span><span class="p">){</span>
+        <span class="n">String</span> <span class="n">service</span> <span class="o">=</span> <span class="s2">&quot;/backend/api/v1/users&quot;</span><span class="p">;</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">addAttribute</span><span class="p">(</span><span class="s2">&quot;users&quot;</span><span class="p">,</span>
+            <span class="n">restOperations</span><span class="o">.</span><span class="n">getForObject</span><span class="p">(</span><span class="n">service</span><span class="p">,</span> <span class="n">User</span><span class="p">[]</span><span class="o">.</span><span class="n">class</span><span class="p">));</span>
+        <span class="k">return</span> <span class="s2">&quot;users&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="docker">
+<h2>Dockerコンテナ<a class="headerlink" href="#docker" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Backendアプリケーションのプロジェクトに作成するDockerfile</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># Dockerfile for sample service using embedded tomcat server
+
+# セキュリティと安定性のため、CentOS 7をベースにします
+FROM centos:centos7
+
+# メンテナの情報を記載します
+MAINTAINER debugroom
+
+# 必要なパッケージをインストールします: OpenJDK, wget, tar, iproute, git
+RUN yum install -y \
+       java-1.8.0-openjdk \
+       java-1.8.0-openjdk-devel \
+       wget tar iproute git
+
+# Apache Mavenをインストールするためのレポジトリを追加します
+RUN wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+
+# レポジトリの設定を調整します
+RUN sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
+
+# Apache Mavenをインストールします
+RUN yum install -y apache-maven
+
+# 環境変数JAVA_HOMEを設定します
+ENV JAVA_HOME /etc/alternatives/jre
+
+# サンプルアプリケーションをcloneします
+RUN git clone https://github.com/taiyakiyasan/tutorial-aws-ecs-app.git /var/local/mynavi-sample-aws-ecs
+
+# pom.xmlを使ってMavenのインストールを行います
+RUN mvn install -f /var/local/mynavi-sample-aws-ecs/pom.xml
+
+# システムの時間設定を退避します
+RUN cp /etc/localtime /etc/localtime.org
+
+# システムのタイムゾーンを日本（Asia/Tokyo）に設定します
+RUN ln -sf  /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+
+# ポート8080を公開します
+EXPOSE 8080
+
+# 起動コマンドを設定します。ここではJavaのjarファイルを実行します
+CMD java -jar -Dspring.profiles.active=production /var/local/mynavi-sample-aws-ecs/backend/target/mynavi-sample-aws-ecs-backend-0.0.1-SNAPSHOT.jar
+</pre></div>
+</div>
 </section>
 </section>
 
@@ -495,7 +655,13 @@ Spring Bootの構成情報を処理するためのオプションの依存関係
 <li><a class="reference internal" href="#ecs">ECSアプリケーションの構築イメージ</a></li>
 <li><a class="reference internal" href="#aws-vpc">AWS VPCの設定</a></li>
 <li><a class="reference internal" href="#aws-alb">AWS ALBの設定手順</a></li>
-<li><a class="reference internal" href="#spring">Springを使用したコンテナアプリケーションの実装方法</a></li>
+<li><a class="reference internal" href="#spring">Springを使用したコンテナアプリケーションの実装方法</a><ul>
+<li><a class="reference internal" href="#pom-xml">pom.xmlの設定</a></li>
+<li><a class="reference internal" href="#backend">アプリケーションの実装(backend)</a></li>
+<li><a class="reference internal" href="#bff">アプリケーションの実装(bff)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#docker">Dockerコンテナ</a></li>
 </ul>
 </li>
 </ul>
